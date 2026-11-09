@@ -116,7 +116,8 @@ function spkTip(m){if(!m)return '';
   let t=m.wpm<120?'A bit slow - aim for 120 to 160 words per minute.':(m.wpm>160?'A bit fast - slow down toward 120 to 160 words per minute.':'Good pace (120 to 160 words per minute).');
   if(m.ft>0)t+=' Try to cut filler words like '+Object.keys(m.fillers).slice(0,3).map(f=>'"'+f+'"').join(', ')+'.';
   return t}
-function speak(text){if(!TTS)return;TTS.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-IN';u.rate=1;TTS.speak(u)}
+function voicePrefs(){const saved=lsGet('ip_voice',{}),p=saved&&typeof saved==='object'?saved:{};return {accent:['en-US','en-IN','en-GB','en-AU'].includes(p.accent)?p.accent:'en-US',rate:p.v===2?Math.min(1.1,Math.max(.6,Number(p.rate)||1)):1,voice:p.voice||''}}
+function speak(text){if(!TTS)return;TTS.cancel();const p=voicePrefs(),u=new SpeechSynthesisUtterance(text);u.lang=p.accent;u.rate=p.rate;const vs=TTS.getVoices();u.voice=vs.find(v=>v.name===p.voice&&v.lang===p.accent)||vs.find(v=>v.lang===p.accent)||null;TTS.speak(u)}
 function card(){stopMic();if(TTS)TTS.cancel();const r=roleById(S.role),q=S.list[S.i],n=S.list.length;
   const st=S.st[q.id]||(S.st[q.id]={tried:'',shown:false,mark:null});
   const wrap=h('div',{});
@@ -124,7 +125,7 @@ function card(){stopMic();if(TTS)TTS.cancel();const r=roleById(S.role),q=S.list[
     h('div',{class:'sbar',role:'progressbar','aria-valuemin':'0','aria-valuemax':String(n),'aria-valuenow':String(S.i+1)},h('i',{style:'width:'+Math.round((S.i+1)/n*100)+'%'})),
     h('span',{class:'pill'},TYN[q.t]||q.t),h('span',{class:'pill'},LVN[q.l]||q.l),
     h('p',{class:'qtext',id:'sessQ',tabindex:'-1'},q.q));
-  const ta=h('textarea',{id:'sessTry',maxlength:'3000',placeholder:'Type or speak your own answer here first (optional). It stays on your phone and is not sent anywhere.','aria-label':'Your answer (optional)'});ta.value=st.tried;ta.oninput=()=>{st.tried=ta.value};
+  const ta=h('textarea',{id:'sessTry',maxlength:'3000',placeholder:'Type or speak your own answer here first (optional). InterviewAnchor does not upload this practice answer. Browser speech services may process audio.','aria-label':'Your answer (optional)'});ta.value=st.tried;ta.oninput=()=>{st.tried=ta.value};
   const err=h('div',{class:'err',role:'alert'});
   const tryBox=h('div',{},h('label',{for:'sessTry',class:'note'},'Try it yourself'),ta);
   const row1=h('div',{class:'row'});
@@ -132,7 +133,7 @@ function card(){stopMic();if(TTS)TTS.cancel();const r=roleById(S.role),q=S.list[
   if(SR){let base='',wantMic=false,micFinal='',micGot=false,micRetries=0,micErr='',spoken='',spkT0=0;
     const paint=interim=>{ta.value=[base,micFinal,interim||''].filter(x=>x&&x.trim()).join(' ').trim();st.tried=ta.value};
     const beginRec=()=>{let rec0;
-      try{rec0=new SR();rec0.lang='en-IN';rec0.continuous=!ANDROID;rec0.interimResults=true;rec0.maxAlternatives=1}catch(e){rec=null;wantMic=false;mic.textContent='Speak my answer';err.textContent='Speaking is not available in this browser. Please type your answer.';return}
+      try{rec0=new SR();rec0.lang=voicePrefs().accent;rec0.continuous=!ANDROID;rec0.interimResults=true;rec0.maxAlternatives=1}catch(e){rec=null;wantMic=false;mic.textContent='Speak my answer';err.textContent='Speaking is not available in this browser. Please type your answer.';return}
       rec=rec0;micErr='';let done=0;
       rec0.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i],t=r&&r[0]&&r[0].transcript?r[0].transcript.trim():'';if(!t)continue;
         if(r.isFinal){if(i>=done){micFinal=(micFinal?micFinal+' ':'')+t;spoken=(spoken?spoken+' ':'')+t;micGot=true;done=i+1}}else interim+=' '+t}
@@ -162,7 +163,7 @@ function card(){stopMic();if(TTS)TTS.cancel();const r=roleById(S.role),q=S.list[
     spkBox.append(h('div',{class:'mine'},h('b',{class:'note'},'Speaking: '),
       (m.wpm?('Pace '+m.wpm+' words/min · '):'')+m.wc+' words · '+m.ft+' filler words'+(fl?' ('+fl+')':'')+'. ',
       h('span',{class:'note'},spkTip(m)),
-      h('span',{class:'note',style:'display:block'},'Measured on your phone only; your words are not sent anywhere.')));
+      h('span',{class:'note',style:'display:block'},'Answer text is not sent to InterviewAnchor. Only pace, filler and word counts are saved if you are logged in. Browser speech services may process audio.')));
     try{fetch('/api/progress/speaking',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({wpm:m.wpm,fillers:m.ft,words:m.wc})}).catch(()=>{})}catch(e){}};
   const reveal=h('button',{type:'button',class:'big',id:'sessShow',onclick:()=>{st.shown=true;drawAns()}},'Show model answer');
   row1.append(reveal);

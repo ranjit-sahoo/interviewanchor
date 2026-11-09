@@ -141,3 +141,15 @@ MIT. See [LICENSE](LICENSE).
 - **Report PDF:** the "Download report as PDF" button prints a branded report with transcripts, pace and fillers.
 - **Sample report:** the homepage shows real app output on a fictional resume. The "Try with a sample resume" button fills the form with that same resume.
 - **Keep-alive:** the free Render instance is pinged on `/health` every 5 minutes by an external monitor, with `.github/workflows/keepalive.yml` as a backup. This keeps cold starts away.
+
+### Email verification on free Render
+
+Standard SMTP ports are blocked on Render free instances. Set `BREVO_API_KEY`
+and `SMTP_FROM` (for example `InterviewAnchor <your-verified-sender@example.com>`)
+to use Brevo's fixed HTTPS transactional endpoint. The sender must first be
+verified with the provider. Secrets belong in the host environment, never Git.
+No resume, interview answer or contact list is sent to the email provider.
+Without a configured transport, addresses remain unverified. Resend returns an
+error when delivery fails; it never reports a failed send as successful.
+Brevo's free quota is 300 emails/day. A quota failure does not upgrade or pay.
+Run a real inbox/code-verification test before marking the feature ready.

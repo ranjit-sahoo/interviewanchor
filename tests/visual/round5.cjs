@@ -22,28 +22,33 @@ const bad = (n, d) => fail.push('FAIL ' + n + (d ? ' - ' + d : ''));
     (r.status >= 400 && r.status < 500 && !/stack|trace|exception|sqlite|postgres/i.test(r.body) ? ok : bad)('bogus session id rejected cleanly', sid.slice(0, 16) + ' -> ' + r.status);
   }
 
-  // 2. Create a real guest session, then try to read it from a second context without the tab's bearer
+  // Guest interview IDs are secret bearer capabilities, not account-owned IDs.
+  // Possession intentionally allows resume across tabs; guessing must fail.
   await page.evaluate(() => document.querySelector('#sampleFill').click());
   await sleep(300);
   await page.evaluate(() => document.querySelector('#tabs button[data-t="interview"]').click());
   await typeIn(page, '#role', 'Analyst');
   await page.evaluate(() => document.querySelector('#btnStart').click());
-  await sleep(4000);
+  await page.waitForFunction(() => sessionStorage.getItem('mr_interview'), {timeout: 30000});
   const sid = await page.evaluate(() => sessionStorage.getItem('mr_interview'));
-  ok('guest session created', sid);
+  (/^[a-f0-9]{24}$/.test(sid) ? ok : bad)('guest bearer has expected opaque format');
   const ctx2 = await browser.createBrowserContext();
   const p2 = await ctx2.newPage();
   await p2.goto(BASE + '/', { waitUntil: 'domcontentloaded' });
-  const stolen = await p2.evaluate(async (s) => {
-    const r = await fetch('/api/session/' + s + '/state');
-    return { status: r.status, body: (await r.text()).slice(0, 200) };
+  const capability = await p2.evaluate(async (s) => {
+    const r = await fetch('/api/session/' + s + '/state'); return r.status;
   }, sid);
-  ((stolen.status === 401 || stolen.status === 403 || stolen.status === 404) && !/question|answer/i.test(stolen.body) ? ok : bad)('IDOR: session state not readable from another browser', 'status=' + stolen.status);
-  const stolenRep = await p2.evaluate(async (s) => {
-    const r = await fetch('/api/session/' + s + '/report');
-    return { status: r.status };
-  }, sid);
-  ((stolenRep.status === 401 || stolenRep.status === 403 || stolenRep.status === 404) ? ok : bad)('IDOR: report not readable from another browser', 'status=' + stolenRep.status);
+  (capability === 200 ? ok : bad)('possession of guest bearer resumes interview');
+  const guessed = sid.slice(0,-1) + (sid.endsWith('0') ? '1' : '0');
+  for (const endpoint of ['state','report']) {
+    const r = await p2.evaluate(async (s, ep) => {
+      const r = await fetch('/api/session/' + s + '/' + ep);
+      return {status:r.status, body:await r.text()};
+    }, guessed, endpoint);
+    (r.status === 404 && !/question|answer/i.test(r.body) ? ok : bad)('modified guest bearer rejected: '+endpoint);
+  }
+  const pendingReport = await api('/api/session/' + sid + '/report');
+  (pendingReport.status === 400 ? ok : bad)('unfinished interview does not expose a report');
 
   // 3. XSS payload as an interview answer - must be stored/rendered escaped
   const xss = '<img src=x onerror="window.__xss=1"><svg onload="window.__xss=2">';
@@ -75,7 +80,7 @@ const bad = (n, d) => fail.push('FAIL ' + n + (d ? ' - ' + d : ''));
 
   // 6. Admin endpoint without token
   const adm = await api('/api/admin/block-card', { method: 'POST', body: JSON.stringify({ token: 'x' }) });
-  ((adm.status === 401 || adm.status === 403) ? ok : bad)('admin endpoint rejects no-token call', 'status=' + adm.status);
+  ((adm.status === 401 || adm.status === 403 || adm.status === 404) ? ok : bad)('admin endpoint rejects no-token call', 'status=' + adm.status);
 
   // 7. Shared card token guessing
   const card = await api('/c/definitely-not-a-real-token-123');

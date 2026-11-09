@@ -830,17 +830,18 @@ async def auth_google(request: Request):
     return resp
 
 
-def _start_or_skip_verification(user_id: str, email: str) -> None:
-    """Send a verification code when SMTP is configured; otherwise auto-verify
-    so self-hosted free installs without mail keep working."""
+def _start_or_skip_verification(user_id: str, email: str) -> bool:
+    """Send when a transport is configured; never claim ownership without proof."""
     if not mailer.enabled():
-        return  # No mail delivery means unverified, not proof of address ownership.
+        return False  # No delivery means unverified, not proof of ownership.
     code = accounts.create_email_verification(user_id)
     try:
         mailer.send(email, "Your InterviewAnchor verification code",
-                    f"Your InterviewAnchor verification code is: {code}\n\nIt expires in 10 minutes. If you did not create or change a InterviewAnchor account, ignore this email.")
+                    f"Your InterviewAnchor verification code is: {code}\n\nIt expires in 10 minutes. If you did not create or change an InterviewAnchor account, ignore this email.")
     except Exception:
         logging.getLogger("interviewpilot").error("verification email delivery failed")
+        return False
+    return True
 
 
 class VerifyEmailIn(BaseModel):
@@ -864,7 +865,8 @@ def resend_verification_ep(request: Request):
         return {"ok": True, "already": True}
     if not mailer.enabled():
         raise HTTPException(503, "Email verification is not available yet. You can keep using the free tools.")
-    _start_or_skip_verification(u["id"], u["email"])
+    if not _start_or_skip_verification(u["id"], u["email"]):
+        raise HTTPException(503, "The verification email could not be sent. Please try again later.")
     return {"ok": True}
 
 

@@ -8,6 +8,6 @@ Minimal sharing by design; every vendor processes only what the feature needs.
 | Nebius Token Factory (LLM) | Prompt text the user pastes (resume/JD) to generate answers | AI features | No account data sent; requests are per-call, not retained by us beyond the user's own saved history |
 | Google (Sign-In) | Email + Google sub for users who choose Google login | Optional sign-in | Global |
 | Google Play (future, premium only) | Purchase token + subscription state | Billing, disabled by default | Google-managed |
-| SMTP relay (optional, if SMTP_HOST set) | Recipient email + 6-digit code | Email verification | Operator's choice; any free tier (e.g. Brevo) |
+| Brevo HTTPS API (when BREVO_API_KEY is set), or configured SMTP relay | Recipient email + verification code; no resume or interview answers | Email verification | Brevo free plan: up to 300 emails/day; no paid fallback. Provider setup/delivery must be verified before enabling. |
 
 No analytics vendor, no ads SDK, no crash-reporting vendor: analytics collection is disabled, and no automatic crash details are stored.

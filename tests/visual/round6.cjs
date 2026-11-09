@@ -53,14 +53,16 @@ const bad = (n, d) => fail.push('FAIL ' + n + (d ? ' - ' + d : ''));
   (focusFails === 0 ? ok : bad)('every tab stop has a visible focus indicator', focusFails + ' misses');
   (hiddenFails === 0 ? ok : bad)('focus never lands on hidden elements', hiddenFails + ' hits');
 
-  // Escape closes the account drawer
-  await page.evaluate(() => document.querySelector('#acctOpen').click());
+  // Escape closes the navigation drawer and returns keyboard focus
+  await page.evaluate(() => document.querySelector('#menuBtn').click());
   await sleep(300);
-  const openBefore = await page.evaluate(() => !document.querySelector('#acctForm').classList.contains('hide'));
+  const openBefore = await page.evaluate(() => !document.querySelector('#drawer').classList.contains('hide'));
   await page.keyboard.press('Escape');
   await sleep(300);
-  const openAfter = await page.evaluate(() => !document.querySelector('#acctForm').classList.contains('hide'));
-  (openBefore && !openAfter ? ok : bad)('Escape closes the account drawer', 'before=' + openBefore + ' after=' + openAfter);
+  const openAfter = await page.evaluate(() => !document.querySelector('#drawer').classList.contains('hide'));
+  (openBefore && !openAfter ? ok : bad)('Escape closes the navigation drawer', 'before=' + openBefore + ' after=' + openAfter);
+
+  (await page.evaluate(() => document.activeElement.id === 'menuBtn') ? ok : bad)('Escape returns focus to menu button');
 
   // Keyboard-only interview start
   await page.evaluate(() => { document.querySelector('#tabs button[data-t="interview"]').click(); document.querySelector('#sampleFill').click(); });

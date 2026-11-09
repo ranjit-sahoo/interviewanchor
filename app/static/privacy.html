@@ -47,6 +47,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 <h2>3. Who else handles your data</h2>
 <ul>
 <li><b>Nebius Token Factory (AI processing):</b> the text you submit (resume, job description, answers) is sent to Nebius, which runs NVIDIA Nemotron models, to produce your result. Provider retention depends on the current Nebius account configuration and policy; do not include confidential employer or customer information in submissions.</li>
+<li><b>Email verification provider:</b> when verification is enabled, Brevo (or the configured SMTP relay) receives your email address and a short-lived verification code to deliver that message. No resume, interview answers or contact list is sent to the email provider.</li>
 <li><b>Recruiters:</b> see section 2A. We do not send screening answers to the AI provider; screening scores are calculated by our own rules.</li>
 <li><b>Render (hosting), Cloudflare (network and security) and Neon (database):</b> they host the app and its data and may log technical request data such as IP address as part of running their service.</li>
 <li><b>Your browser's speech feature:</b> if you use the voice mode, speech recognition is done by your browser (for example Chrome or Safari), which may send audio to its provider under that provider's own policy. We never receive or store your audio.</li>
@@ -64,7 +65,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 </ul>
 
 <h2>4. Analytics</h2>
-<p>We count visits ourselves. There are no cookies for this, no third-party scripts, and no IP addresses stored. We keep daily totals (page views and how often each feature is used). To count unique visitors, we store a one-way hash made from the day, a server secret, and your network and browser details. It cannot be turned back into an IP address and cannot be linked from one day to the next. Bots and uptime checks are not counted. The aggregate numbers are visible at <a href="/stats">/stats</a>.</p>
+<p>Analytics are disabled in the launch build. No visit counts, feature-use counts or visitor hashes are collected. There are no third-party analytics scripts. Hosting providers may still keep technical security logs as described in section 3.</p>
 
 <h2>5. How long we keep data and how to delete it</h2>
 <ul>

@@ -18,7 +18,10 @@ const WIDTHS = [1366, 1024, 768, 390];
       }));
       const overflow = m.sw > m.iw + 1;
       if (overflow) fails.push(`OVERFLOW ${p} @${w}px: scrollWidth=${m.sw} innerWidth=${m.iw}`);
-      const errs = problems.filter(x => !/HTTP404.*definitely-not-a-page/.test(x));
+      // These two routes deliberately probe missing content. Suppress only their
+      // expected 404 resource messages, never JavaScript/runtime errors.
+      const missing = ['/s/invalid-token-probe', '/definitely-not-a-page'].includes(p);
+      const errs = problems.filter(x => !(missing && (/^HTTP404:/.test(x) || /^CONSOLE: Failed to load resource: the server responded with a status of 404/.test(x))));
       if (errs.length) fails.push(`ERRORS ${p} @${w}px: ${errs.join(' | ')}`);
       await page.close();
     }
