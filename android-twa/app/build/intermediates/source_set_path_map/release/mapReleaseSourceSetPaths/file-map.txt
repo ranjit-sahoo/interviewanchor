@@ -1,0 +1,11 @@
+com.ranjitsahoo.mockrep.app-annotation-experimental-1.4.0-0 /home/sandbox/.gradle/caches/8.11.1/transforms/0558d7eb9850fc94ab3ee1f7bf2708e9/transformed/annotation-experimental-1.4.0/res
+com.ranjitsahoo.mockrep.app-core-1.1.0-1 /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/res
+com.ranjitsahoo.mockrep.app-androidbrowserhelper-2.5.0-2 /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/res
+com.ranjitsahoo.mockrep.app-browser-1.8.0-3 /home/sandbox/.gradle/caches/8.11.1/transforms/ef4600e062ea7a79d732fdc30d125b40/transformed/browser-1.8.0/res
+com.ranjitsahoo.mockrep.app-pngs-4 /tmp/mockrep/android-twa/app/build/generated/res/pngs/release
+com.ranjitsahoo.mockrep.app-resValues-5 /tmp/mockrep/android-twa/app/build/generated/res/resValues/release
+com.ranjitsahoo.mockrep.app-packageReleaseResources-6 /tmp/mockrep/android-twa/app/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+com.ranjitsahoo.mockrep.app-packageReleaseResources-7 /tmp/mockrep/android-twa/app/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+com.ranjitsahoo.mockrep.app-release-8 /tmp/mockrep/android-twa/app/build/intermediates/merged_res/release/mergeReleaseResources
+com.ranjitsahoo.mockrep.app-main-9 /tmp/mockrep/android-twa/app/src/main/res
+com.ranjitsahoo.mockrep.app-release-10 /tmp/mockrep/android-twa/app/src/release/res

@@ -11,7 +11,7 @@ def test_thank_you_page_branded():
     assert r.status_code == 200
     assert "You are on the list" in r.text
     assert 'content="noindex"' in r.text
-    assert "MockRep" in r.text
+    assert "InterviewAnchor" in r.text
 
 
 def test_404_branded_for_browsers_json_for_api():

@@ -67,5 +67,5 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 function fill(tpl,v){return tpl.replace(/\{(\w+)\}/g,(m,k)=>v[k]!=null&&v[k]!==''?v[k]:m)}
 function ics(o){const z=n=>String(n).padStart(2,'0'),f=d=>d.getUTCFullYear()+z(d.getUTCMonth()+1)+z(d.getUTCDate())+'T'+z(d.getUTCHours())+z(d.getUTCMinutes())+'00Z';
  const s=new Date(o.start),e=new Date(s.getTime()+(o.mins||30)*60000),esc2=x=>String(x||'').replace(/[\\;,]/g,m=>'\\'+m).replace(/\n/g,'\\n');
- return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MockRep//EN','BEGIN:VEVENT','UID:'+Date.now()+Math.random().toString(36).slice(2)+'@mockrep','DTSTAMP:'+f(new Date()),'DTSTART:'+f(s),'DTEND:'+f(e),'SUMMARY:'+esc2(o.title),'LOCATION:'+esc2(o.place),'DESCRIPTION:'+esc2(o.desc),'END:VEVENT','END:VCALENDAR'].join('\r\n')}
+ return ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//InterviewAnchor//EN','BEGIN:VEVENT','UID:'+Date.now()+Math.random().toString(36).slice(2)+'@interviewanchor','DTSTAMP:'+f(new Date()),'DTSTART:'+f(s),'DTEND:'+f(e),'SUMMARY:'+esc2(o.title),'LOCATION:'+esc2(o.place),'DESCRIPTION:'+esc2(o.desc),'END:VEVENT','END:VCALENDAR'].join('\r\n')}
 return{ROLES,MSG,offerLetter,refCheck,scorecard,fill,ics,esc}})();

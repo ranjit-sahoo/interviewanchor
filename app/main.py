@@ -25,7 +25,7 @@ GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "").strip()
 from app import bank, brief, builder, card, coding, companies, company_sets, icons, llm, prep, reports, services, star
 from app.guard import FailLimiter, RateLimiter, client_key, rate_limit
 
-app = FastAPI(title="MockRep", docs_url=None, redoc_url=None, openapi_url=None)
+app = FastAPI(title="InterviewAnchor", docs_url=None, redoc_url=None, openapi_url=None)
 from app import analytics as _analytics  # noqa: E402
 from app import entitlements  # noqa: E402
 
@@ -144,7 +144,7 @@ async def request_origin_guard(request: Request, call_next):
             origin = request.headers.get("origin")
             allowed = {PUBLIC_BASE.rstrip("/"), str(request.base_url).rstrip("/")} | set(_origins)
             if origin and origin.rstrip("/") not in allowed:
-                return JSONResponse({"detail": "This request must come from MockRep."}, status_code=403)
+                return JSONResponse({"detail": "This request must come from InterviewAnchor."}, status_code=403)
             if request.headers.get("sec-fetch-site") == "cross-site":
                 return JSONResponse({"detail": "Cross-site changes are not allowed."}, status_code=403)
     return await call_next(request)
@@ -172,10 +172,10 @@ async def security_headers(request: Request, call_next):
     return resp
 
 
-_NOT_FOUND = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found - MockRep</title><meta name="robots" content="noindex"><link rel="icon" href="/static/icons/icon-192.png"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#eef2fb;font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:20px}.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#9be000,#76b900);display:inline-grid;place-items:center;color:#0b1200;font-weight:900}h1{font-size:30px;margin:14px 0 6px}p{color:#9aa6c0;margin:0 0 20px}a{display:inline-block;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,#3b66e0,#2c52c4);color:#fff;font-weight:700;text-decoration:none}</style></head><body><main><span class="logo">MR</span><h1>This page was not found</h1><p>The link may be old or mistyped.</p><a href="/">Go to MockRep home</a></main></body></html>"""
+_NOT_FOUND = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found - InterviewAnchor</title><meta name="robots" content="noindex"><link rel="icon" href="/static/icons/icon-192.png"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#eef2fb;font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:20px}.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#9be000,#76b900);display:inline-grid;place-items:center;color:#0b1200;font-weight:900}h1{font-size:30px;margin:14px 0 6px}p{color:#9aa6c0;margin:0 0 20px}a{display:inline-block;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,#3b66e0,#2c52c4);color:#fff;font-weight:700;text-decoration:none}</style></head><body><main><span class="logo">IA</span><h1>This page was not found</h1><p>The link may be old or mistyped.</p><a href="/">Go to InterviewAnchor home</a></main></body></html>"""
 
 
-_THANK_YOU = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thank you - MockRep</title><meta name="description" content="Thanks for joining the MockRep Pro waitlist."><meta name="robots" content="noindex"><link rel="icon" href="/static/icons/icon-192.png"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#eef2fb;font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:20px}.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#9be000,#76b900);display:inline-grid;place-items:center;color:#0b1200;font-weight:900}h1{font-size:30px;margin:14px 0 6px}p{color:#9aa6c0;margin:0 0 20px;max-width:420px}a{display:inline-block;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,#3b66e0,#2c52c4);color:#fff;font-weight:700;text-decoration:none}</style></head><body><main><span class="logo">MR</span><h1>You are on the list</h1><p>Thank you for joining the MockRep Pro waitlist. One email when Pro opens, no spam. You can ask to be removed any time.</p><a href="/">Back to MockRep home</a></main></body></html>"""
+_THANK_YOU = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thank you - InterviewAnchor</title><meta name="description" content="Thanks for joining the InterviewAnchor Pro waitlist."><meta name="robots" content="noindex"><link rel="icon" href="/static/icons/icon-192.png"><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#eef2fb;font:16px/1.6 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-align:center;padding:20px}.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#9be000,#76b900);display:inline-grid;place-items:center;color:#0b1200;font-weight:900}h1{font-size:30px;margin:14px 0 6px}p{color:#9aa6c0;margin:0 0 20px;max-width:420px}a{display:inline-block;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,#3b66e0,#2c52c4);color:#fff;font-weight:700;text-decoration:none}</style></head><body><main><span class="logo">IA</span><h1>You are on the list</h1><p>Thank you for joining the InterviewAnchor Pro waitlist. One email when Pro opens, no spam. You can ask to be removed any time.</p><a href="/">Back to InterviewAnchor home</a></main></body></html>"""
 
 
 @app.exception_handler(StarletteHTTPException)
@@ -732,7 +732,7 @@ def auth_register(body: AuthIn, request: Request):
     if body.agree is not True:
         raise HTTPException(400, "Please agree to the Terms and Privacy Policy to create an account.")
     if body.age18 is not True:
-        raise HTTPException(400, "MockRep is for users aged 18 and above. If you are under 18, a parent or guardian must create and supervise the account; please ask us first.")
+        raise HTTPException(400, "InterviewAnchor is for users aged 18 and above. If you are under 18, a parent or guardian must create and supervise the account; please ask us first.")
     try:
         user, token = accounts.register(body.email, body.password, body.role or "candidate", body.invite or "")
     except ValueError as e:
@@ -837,8 +837,8 @@ def _start_or_skip_verification(user_id: str, email: str) -> None:
         return  # No mail delivery means unverified, not proof of address ownership.
     code = accounts.create_email_verification(user_id)
     try:
-        mailer.send(email, "Your MockRep verification code",
-                    f"Your MockRep verification code is: {code}\n\nIt expires in 10 minutes. If you did not create or change a MockRep account, ignore this email.")
+        mailer.send(email, "Your InterviewAnchor verification code",
+                    f"Your InterviewAnchor verification code is: {code}\n\nIt expires in 10 minutes. If you did not create or change a InterviewAnchor account, ignore this email.")
     except Exception:
         logging.getLogger("interviewpilot").error("verification email delivery failed")
 
@@ -907,7 +907,7 @@ def change_email_ep(body: ChangeEmailIn, request: Request):
 def account_export(request: Request):
     u = need_user(request)
     data = accounts.export_data(u["id"])
-    return JSONResponse(data, headers={"Content-Disposition": "attachment; filename=mockrep-my-data.json"})
+    return JSONResponse(data, headers={"Content-Disposition": "attachment; filename=interviewanchor-my-data.json"})
 
 
 @app.post("/api/auth/logout", dependencies=LIMITED)
@@ -1106,8 +1106,8 @@ def og_image():
         img = glow.filter(ImageFilter.GaussianBlur(110))
         d = ImageDraw.Draw(img)
         d.rounded_rectangle([70, 70, 134, 134], radius=18, fill="#8fcf00")
-        d.text((102, 102), "MR", font=card._f(30, True), fill="#0b1200", anchor="mm")
-        d.text((154, 102), "MockRep", font=card._f(34, True), fill="#eef2fb", anchor="lm")
+        d.text((102, 102), "IA", font=card._f(30, True), fill="#0b1200", anchor="mm")
+        d.text((154, 102), "InterviewAnchor", font=card._f(34, True), fill="#eef2fb", anchor="lm")
         d.text((70, 250), "Walk into every", font=card._f(78, True), fill="#eef2fb", anchor="ls")
         d.text((70, 345), "interview ready.", font=card._f(78, True), fill="#9be000", anchor="ls")
         d.text((70, 430), "AI mock interviews, resume review and prep for any job.", font=card._f(34), fill="#c4cde0", anchor="ls")

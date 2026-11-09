@@ -61,7 +61,7 @@ def test_account_export_contains_everything_and_requires_auth():
     c.post("/api/history", json={"kind": "prep", "title": "T", "data": {"a": 1}})
     r = c.get("/api/account/export")
     assert r.status_code == 200
-    assert "mockrep-my-data.json" in r.headers["content-disposition"]
+    assert "interviewanchor-my-data.json" in r.headers["content-disposition"]
     d = r.json()
     assert d["account"]["email"] == "exp@example.com"
     assert any(h["title"] == "T" and h["data"] == {"a": 1} for h in d["history"])

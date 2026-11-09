@@ -38,7 +38,7 @@ def test_every_canonical_company_has_a_curated_set():
 def test_company_sets_disclaimer_present():
     for n in companies.names():
         note = company_sets.for_company(n)["note"]
-        assert "written by MockRep" in note
+        assert "written by InterviewAnchor" in note
         assert "Not leaked questions" in note
 
 

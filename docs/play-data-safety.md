@@ -1,4 +1,4 @@
-# Google Play Data safety form - exact answers for MockRep
+# Google Play Data safety form - exact answers for InterviewAnchor
 
 Last reviewed: October 30, 2026 (matches /privacy section 3A). Tick these in Play Console > App content > Data safety.
 

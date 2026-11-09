@@ -5,7 +5,7 @@ app treats email verification as not required (self-hosters without mail keep
 working). Any free SMTP relay works (Brevo free tier, Gmail app password, ...):
 
   SMTP_HOST=smtp-relay.brevo.com SMTP_PORT=587 SMTP_USER=... SMTP_PASS=...
-  SMTP_FROM="MockRep <noreply@example.com>"
+  SMTP_FROM="InterviewAnchor <noreply@example.com>"
 """
 import os
 import smtplib

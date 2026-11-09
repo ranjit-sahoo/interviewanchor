@@ -1,11 +1,11 @@
 """Curated company-wise interview question sets (instant, no AI call).
 
 These are commonly reported interview THEMES for each company, written by
-MockRep. They are not leaked or confidential questions. Keys match the
+InterviewAnchor. They are not leaked or confidential questions. Keys match the
 canonical names in companies.py so a profile lookup can attach the set.
 """
 
-_NOTE = "Commonly reported themes for {name} interviews, written by MockRep. Not leaked questions."
+_NOTE = "Commonly reported themes for {name} interviews, written by InterviewAnchor. Not leaked questions."
 
 # (type, level, question, one-line hint)
 _SETS: dict[str, list[tuple[str, str, str, str]]] = {

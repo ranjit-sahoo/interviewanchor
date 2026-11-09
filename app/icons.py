@@ -6,7 +6,7 @@ from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont
 
 FONT = os.path.join(os.path.dirname(__file__), "static", "fonts", "DejaVuSans-Bold.ttf")
-MONOGRAM = "MR"
+MONOGRAM = "IA"
 # name -> (pixel size, green square start, green square end as a fraction of the canvas)
 ICONS = {
     "icon-192": (192, 0.10, 0.90),

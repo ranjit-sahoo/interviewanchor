@@ -114,7 +114,7 @@ def test_disabled_when_not_configured(monkeypatch):
 def test_delete_account_page_served():
     r = fresh().get("/delete-account")
     assert r.status_code == 200 and "text/html" in r.headers["content-type"]
-    for needle in ("Delete your MockRep account", "permanent", "ranjitkumarsahoo77@gmail.com", "delete-account.js"):
+    for needle in ("Delete your InterviewAnchor account", "permanent", "ranjitkumarsahoo77@gmail.com", "delete-account.js"):
         assert needle in r.text
     assert "<script>" not in r.text.split('<script src="/static/delete-account.js" defer></script>')[0] or True
 

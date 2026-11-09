@@ -1,0 +1,134 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:1:1-13:12
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:1:1-13:12
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:1:1-13:12
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:1:1-13:12
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:17:1-36:12
+MERGED from [androidx.browser:browser:1.8.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ef4600e062ea7a79d732fdc30d125b40/transformed/browser-1.8.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ede02a27188e30128c4e6e8452cf3ac9/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0cc7dfd2c0fcae0982c28937b18f49ab/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/d7331cfc52deae4583f878031781e6fb/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0558d7eb9850fc94ab3ee1f7bf2708e9/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+	package
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:2-12:16
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:2-12:16
+MERGED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ede02a27188e30128c4e6e8452cf3ac9/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ede02a27188e30128c4e6e8452cf3ac9/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:24:18-86
+	android:label
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:15-46
+	android:icon
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:47-81
+	android:allowBackup
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:82-109
+	android:theme
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:147-178
+	android:usesCleartextTraffic
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:2:110-146
+meta-data#asset_statements
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:3:3-91
+	android:resource
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:3:46-89
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:3:14-45
+activity#com.google.androidbrowserhelper.trusted.LauncherActivity
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:4:3-11:14
+	android:launchMode
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:4:109-140
+	android:exported
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:4:85-108
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:4:13-84
+meta-data#android.support.customtabs.trusted.DEFAULT_URL
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:5:4-133
+	android:value
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:5:77-131
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:5:15-76
+meta-data#android.support.customtabs.trusted.STATUS_BAR_COLOR
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:6:4-120
+	android:resource
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:6:82-118
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:6:15-81
+meta-data#android.support.customtabs.trusted.NAVIGATION_BAR_COLOR
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:7:4-124
+	android:resource
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:7:86-122
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:7:15-85
+meta-data#android.support.customtabs.trusted.DISPLAY_MODE
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:8:4-106
+	android:value
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:8:78-104
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:8:15-77
+meta-data#android.support.customtabs.trusted.FALLBACK_STRATEGY
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:9:4-111
+	android:value
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:9:83-109
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:9:15-82
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:10:4-145
+action#android.intent.action.MAIN
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:10:19-70
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:10:27-68
+category#android.intent.category.LAUNCHER
+ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:10:70-129
+	android:name
+		ADDED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml:10:80-127
+uses-sdk
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:22:5-24:41
+MERGED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:22:5-24:41
+MERGED from [androidx.browser:browser:1.8.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ef4600e062ea7a79d732fdc30d125b40/transformed/browser-1.8.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.browser:browser:1.8.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ef4600e062ea7a79d732fdc30d125b40/transformed/browser-1.8.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/12388d32ff154de644b2df4a3cb5ad96/transformed/core-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ede02a27188e30128c4e6e8452cf3ac9/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/sandbox/.gradle/caches/8.11.1/transforms/ede02a27188e30128c4e6e8452cf3ac9/transformed/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0cc7dfd2c0fcae0982c28937b18f49ab/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0cc7dfd2c0fcae0982c28937b18f49ab/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/d7331cfc52deae4583f878031781e6fb/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] /home/sandbox/.gradle/caches/8.11.1/transforms/d7331cfc52deae4583f878031781e6fb/transformed/lifecycle-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0558d7eb9850fc94ab3ee1f7bf2708e9/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /home/sandbox/.gradle/caches/8.11.1/transforms/0558d7eb9850fc94ab3ee1f7bf2708e9/transformed/annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+	android:targetSdkVersion
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /tmp/mockrep/android-twa/app/src/main/AndroidManifest.xml
+queries
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:26:5-34:15
+intent#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+data:scheme:https
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:27:9-33:18
+action#android.intent.action.VIEW
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:28:13-65
+	android:name
+		ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:28:21-62
+category#android.intent.category.BROWSABLE
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:30:13-74
+	android:name
+		ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:30:23-71
+data
+ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:32:13-44
+	android:scheme
+		ADDED from [com.google.androidbrowserhelper:androidbrowserhelper:2.5.0] /home/sandbox/.gradle/caches/8.11.1/transforms/6071355b2723133aa2fcbafcfb6267b1/transformed/androidbrowserhelper-2.5.0/AndroidManifest.xml:32:19-41

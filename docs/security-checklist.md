@@ -1,6 +1,6 @@
 > DRAFT inventory, not certification. Assertions below need independent source review and six end-to-end test rounds. Pattern scans do not prove absence of all secrets.
 
-# MockRep 27-point security checklist (web app + API)
+# InterviewAnchor 27-point security checklist (web app + API)
 
 Mapped item by item, with where each control lives. Last audited: 2026-10-30.
 

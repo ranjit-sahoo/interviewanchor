@@ -1,4 +1,4 @@
-# MockRep premium plan - NOT READY, NOT ENABLED
+# InterviewAnchor premium plan - NOT READY, NOT ENABLED
 
 Owner decision, 2026-10-30 04:46 IST:
 - At Play launch all features are free for the first 2-3 months, with no charges anywhere.

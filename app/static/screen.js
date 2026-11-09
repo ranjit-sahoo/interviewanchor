@@ -131,9 +131,9 @@ function mcqFlow(mod){STATE.render=()=>mcqFlow(mod);const items=PLAN[mod],ans=it
 // ---------- boot
 (async()=>{let l='en';try{l=localStorage.getItem('mr_slang')||''}catch(e){}
  try{INFO=await api('/api/s/'+encodeURIComponent(ORIG))}catch(e){setLang(l||'en');return fail(e.message)}
- setLang(l||INFO.campaign.lang||'en');document.title=(INFO.campaign.name||'Screening')+' - '+(INFO.brand.name||'MockRep');
+ setLang(l||INFO.campaign.lang||'en');document.title=(INFO.campaign.name||'Screening')+' - '+(INFO.brand.name||'InterviewAnchor');
  if(INFO.brand.color)document.documentElement.style.setProperty('--brand',INFO.brand.color);
- const b=$('brand');if(INFO.brand.logo)b.append(h('img',{src:INFO.brand.logo,alt:''}));b.append(INFO.brand.name||'MockRep');
+ const b=$('brand');if(INFO.brand.logo)b.append(h('img',{src:INFO.brand.logo,alt:''}));b.append(INFO.brand.name||'InterviewAnchor');
  if(INFO.status==='done'){STATE.render=finish2;return finish2()}
  if(INFO.open){let saved=null;try{saved=localStorage.getItem('mr_s_'+ORIG)}catch(e){}if(saved){try{const mine=await api('/api/s/'+encodeURIComponent(saved));if(mine.status==='done'){TOKEN=saved;INFO=mine;STATE.render=finish2;return finish2()}}catch(e){}}}
  startScreen()})();

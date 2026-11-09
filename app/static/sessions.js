@@ -195,7 +195,7 @@ function done(){stopMic();stopAudio(true);if(TTS)TTS.cancel();const r=roleById(S
     h('p',{},'You tried '+tried+' answers yourself and opened '+seen+' model answers.'+(again.length?' '+again.length+' marked to practise again.':'')),
     h('p',{class:'note'},'Tip: say your answers out loud. The real interview is spoken.'),
     streak?h('p',{class:'note'},'Practice streak: '+streak+' day'+(streak===1?'':'s')+' in a row. Come back tomorrow to keep it going.'):null,
-    h('p',{},h('a',{href:'https://wa.me/?text='+encodeURIComponent('I just practised '+n+' '+r.name+' interview questions on MockRep. Free practice sessions, question bank and mock interviews: https://mockrep.onrender.com'),target:'_blank',rel:'noopener',style:'color:var(--acc2)'},'Share your practice on WhatsApp')),
+    h('p',{},h('a',{href:'https://wa.me/?text='+encodeURIComponent('I just practised '+n+' '+r.name+' interview questions on InterviewAnchor. Free practice sessions, question bank and mock interviews: https://mockrep.onrender.com'),target:'_blank',rel:'noopener',style:'color:var(--acc2)'},'Share your practice on WhatsApp')),
     h('div',{class:'row'},again.length?h('button',{type:'button',onclick:()=>{S.list=again;S.i=0;card()}},'Practise the '+again.length+' marked'):null,
       h('button',{type:'button',class:'alt',onclick:()=>{S.list=order(filtered(r));S.i=0;S.st={};card()}},'Start again'),
       h('button',{type:'button',class:'ghost',onclick:()=>{S.list=[];picker()}},'Choose another job'),
