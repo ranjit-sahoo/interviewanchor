@@ -34,6 +34,8 @@ def send(to: str, subject: str, text: str) -> None:
     msg["To"] = to
     msg["Subject"] = subject
     msg.set_content(text)
+    from app import mail_limits
+    mail_limits.reserve(to)
     if BREVO_API_KEY:
         name, address = parseaddr(FROM)
         if not address or "@" not in address or address.endswith("@localhost"):

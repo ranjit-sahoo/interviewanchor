@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app import accounts, mailer
+from app import accounts, mailer, monetization, playbilling
 
 try:
     from google.oauth2 import id_token as _google_id_token
@@ -118,6 +118,88 @@ def _role_for(token: str):
 
 
 @app.middleware("http")
+async def paid_ai_scope(request: Request, call_next):
+    # All provider calls also check this identity, including GET report generation.
+    user = current_user(request) if monetization.enabled() else None
+    if user and monetization.enabled() and playbilling.configured() and (monetization.ai_route(request.method, request.url.path) or request.url.path.startswith('/api/session/')):
+        ent = entitlements.record_for(user)
+        if ent.get('source') == 'play' and time.time() - (ent.get('last_verified_at') or 0) > 900:
+            try:
+                # Refresh only stale paid records, not every request. Failure cannot
+                # extend the existing one-hour verification validity window.
+                await __import__('starlette.concurrency', fromlist=['run_in_threadpool']).run_in_threadpool(playbilling.refresh, user)
+            except (playbilling.BillingUnavailable, playbilling.InvalidPurchase):
+                pass
+    token = monetization.REQUEST_USER.set(user)
+    feature_token = monetization.REQUEST_FEATURE.set(monetization.feature_for(request.url.path))
+    try:
+        if monetization.enabled() and monetization.ai_route(request.method, request.url.path):
+            if not user:
+                return JSONResponse({"detail": "Sign in and choose the yearly plan to use AI tools. Free practice stays available.", "code": "plan_required"}, status_code=401)
+            if not monetization.paid_record(user):
+                return JSONResponse({"detail": "AI tools need an active verified yearly plan. Free practice stays available.", "code": "plan_required"}, status_code=402)
+        return await call_next(request)
+    finally:
+        monetization.REQUEST_USER.reset(token)
+        monetization.REQUEST_FEATURE.reset(feature_token)
+
+
+class PlayReceiptIn(BaseModel):
+    purchase_token: str = Field(min_length=10, max_length=4096)
+
+
+@app.post('/api/billing/play/prepare', dependencies=[Depends(auth_limit)])
+def prepare_play_purchase(request: Request):
+    try:
+        return monetization.prepare_purchase(need_user(request))
+    except ValueError as e:
+        raise HTTPException(409, str(e))
+
+
+@app.post("/api/billing/play/verify", dependencies=[Depends(auth_limit)])
+def verify_play_receipt(body: PlayReceiptIn, request: Request):
+    u = need_user(request)
+    try:
+        return playbilling.verify(u, body.purchase_token)
+    except playbilling.InvalidPurchase as e:
+        raise HTTPException(400, str(e))
+    except playbilling.BillingUnavailable as e:
+        raise HTTPException(503, str(e))
+
+
+@app.post("/api/billing/play/restore", dependencies=[Depends(auth_limit)])
+def restore_play_receipt(request: Request):
+    u = need_user(request)
+    try:
+        result = playbilling.refresh(u)
+        if not result:
+            raise HTTPException(404, "No saved Play purchase for this account. Restore in the Android app.")
+        return result
+    except playbilling.InvalidPurchase as e:
+        raise HTTPException(400, str(e))
+    except playbilling.BillingUnavailable as e:
+        raise HTTPException(503, str(e))
+
+
+@app.post('/api/billing/play/notifications')
+async def play_notification(request: Request):
+    if len(await request.body()) > 24000:
+        raise HTTPException(413, 'Notification too large')
+    try:
+        body = await request.json()
+        return await __import__('starlette.concurrency', fromlist=['run_in_threadpool']).run_in_threadpool(playbilling.process_notification, request.headers.get('authorization', ''), body)
+    except (ValueError, playbilling.InvalidPurchase):
+        raise HTTPException(401, 'Notification not authorized')
+    except playbilling.BillingUnavailable:
+        raise HTTPException(503, 'Verification temporarily unavailable')
+
+
+@app.get("/api/plan")
+def plan_status(request: Request):
+    return monetization.plan_info(current_user(request))
+
+
+@app.middleware("http")
 async def role_gate(request: Request, call_next):
     """Recruiter accounts get the recruiter tools only; candidate accounts and guests get the candidate tools only."""
     path = request.url.path
@@ -138,6 +220,8 @@ async def request_origin_guard(request: Request, call_next):
         # accounts.google.com; that request is CSRF-protected by Google's own
         # g_csrf_token double-submit pair checked in the handler.
         ct = request.headers.get("content-type", "")
+        if request.url.path == '/api/billing/play/notifications':
+            return await call_next(request)  # independent Google OIDC verification in handler
         gis_form = request.url.path == "/api/auth/google" and (
             ct.startswith("application/x-www-form-urlencoded") or ct.startswith("multipart/form-data"))
         if not gis_form:
@@ -159,7 +243,7 @@ async def security_headers(request: Request, call_next):
     h.setdefault("X-Content-Type-Options", "nosniff")
     h.setdefault("X-Frame-Options", "DENY")
     h.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
-    h.setdefault("Permissions-Policy", "camera=(), geolocation=(), payment=(), microphone=(self)")
+    h.setdefault("Permissions-Policy", "camera=(), geolocation=(), payment=(self), microphone=(self)")
     h.setdefault("Strict-Transport-Security", "max-age=31536000")
     h.setdefault(
         "Content-Security-Policy",
@@ -237,9 +321,15 @@ async def unhandled(_: Request, exc: Exception):
 
 @app.exception_handler(llm.LLMError)
 async def llm_error(_: Request, exc: llm.LLMError):
+    if str(exc) == 'input_limit':
+        return JSONResponse({'detail': 'This AI request is too long. Shorten the resume, job description or answer. No model call was made.', 'code': 'input_limit'}, status_code=413)
+    if str(exc) == 'plan_required':
+        return JSONResponse({'detail': 'AI tools need an active verified yearly plan. Free practice stays available.', 'code': 'plan_required'}, status_code=402)
+    if str(exc) == 'plan_quota':
+        return JSONResponse({'detail': 'Your plan AI fair-use limit has been reached. Free practice and saved results remain available.', 'code': 'plan_quota'}, status_code=429)
     if "budget" in str(exc):
         return JSONResponse(
-            {"detail": "Today's free AI capacity has been used up. The question bank, coding practice and resume builder still work. Please try again tomorrow."},
+            {"detail": "The app's current AI capacity has been used up. The question bank, coding practice and resume builder still work. Please try again tomorrow."},
             status_code=503,
         )
     return JSONResponse({"detail": "The AI service is busy or unavailable. Please try again in a moment."}, status_code=502)
@@ -1148,6 +1238,11 @@ def sitemap():
 @app.get("/delete-account")
 def delete_account_page():
     return FileResponse(os.path.join(STATIC, "delete-account.html"), media_type="text/html")
+
+
+@app.get("/plans")
+def plans_page():
+    return FileResponse(os.path.join(STATIC, "plans.html"))
 
 
 @app.get("/privacy")

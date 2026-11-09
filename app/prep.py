@@ -6,6 +6,7 @@ the result is cached by input hash so repeat requests are instant.
 import hashlib
 import threading
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 
 from app import basic_in, llm, market
 
@@ -112,7 +113,7 @@ def build(resume: str, role: str, jd: str, country: str) -> dict:
     if (hit := _get(key)) is not None:
         return hit
     with ThreadPoolExecutor(max_workers=2) as ex:
-        fa, fb = (ex.submit(_core, resume, role, jd, country, sp) for sp in SPECS)
+        fa, fb = (ex.submit(copy_context().run, _core, resume, role, jd, country, sp) for sp in SPECS)
         try:
             ca, focus, qa = fa.result()
         except llm.LLMError:

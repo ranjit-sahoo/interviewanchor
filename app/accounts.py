@@ -312,8 +312,9 @@ def logout(token: str | None):
 
 
 def cancel_subscription(user_id: str) -> None:
-    """Hook: no paid plans exist yet. When billing is added, cancel the user's subscription here so
-    auto-pay stops from the next cycle. delete_account calls it first."""
+    """The only configured sale is prepaid/non-renewing. No future auto-pay exists.
+    Account deletion is not a Google Play refund request. Never claim otherwise.
+    """
     return None
 
 
@@ -330,6 +331,18 @@ def delete_account(user_id: str):
             c.run("UPDATE users SET org_id=NULL, org_role=NULL, role='candidate' WHERE org_id=? AND id<>?", (org, user_id))
             c.run("DELETE FROM orgs WHERE id=?", (org,))
         c.run("DELETE FROM email_verifications WHERE user_id=?", (user_id,))
+        from app import playbilling
+        playbilling._tables(c)
+        # Keep only an anonymous anti-replay fingerprint, not the receipt or identity.
+        c.run("UPDATE play_receipts SET user_id=?,token='' WHERE user_id=?", ('deleted:' + uuid.uuid4().hex, user_id))
+        c.run("DELETE FROM play_current WHERE user_id=?", (user_id,))
+        c.run("DELETE FROM play_regions WHERE user_id=?", (user_id,))
+        c.run('CREATE TABLE IF NOT EXISTS paid_feature_usage (user_id TEXT NOT NULL, day TEXT NOT NULL, feature TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY(user_id,day,feature))')
+        c.run('DELETE FROM paid_feature_usage WHERE user_id=?', (user_id,))
+        c.run('CREATE TABLE IF NOT EXISTS launch_admission (user_id TEXT PRIMARY KEY, created DOUBLE PRECISION NOT NULL)')
+        c.run('UPDATE launch_admission SET user_id=? WHERE user_id=?', ('deleted:' + uuid.uuid4().hex, user_id))
+        c.run("CREATE TABLE IF NOT EXISTS paid_ai_usage (user_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL, micro BIGINT NOT NULL, PRIMARY KEY(user_id,day))")
+        c.run("DELETE FROM paid_ai_usage WHERE user_id=?", (user_id,))
         c.run("DELETE FROM entitlements WHERE user_id=?", (user_id,))
         c.run("DELETE FROM history WHERE user_id=?", (user_id,))
         c.run("DELETE FROM progress WHERE user_id=?", (user_id,))
@@ -446,7 +459,14 @@ def export_data(user_id: str) -> dict:
         except Exception:
             pass
         items.append(h)
+    from app import entitlements, monetization
+    with Conn() as c:
+        c.run('CREATE TABLE IF NOT EXISTS paid_ai_usage (user_id TEXT NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL, micro BIGINT NOT NULL, PRIMARY KEY(user_id,day))')
+        c.run('CREATE TABLE IF NOT EXISTS paid_feature_usage (user_id TEXT NOT NULL, day TEXT NOT NULL, feature TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY(user_id,day,feature))')
+        usage = c.run('SELECT day,n,micro FROM paid_ai_usage WHERE user_id=? ORDER BY day', (user_id,))
+        feature_usage = c.run('SELECT day,feature,n FROM paid_feature_usage WHERE user_id=? ORDER BY day,feature', (user_id,))
     return {
+        'plan': entitlements.record_for({'id': user_id}), 'ai_usage': usage, 'ai_feature_usage': feature_usage,
         "exported_at": time.time(),
         "account": {"email": me[0]["email"], "role": me[0]["role"], "created": me[0]["created"]},
         "history": items,

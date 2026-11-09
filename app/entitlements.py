@@ -2,6 +2,7 @@
 PLANS (limits per role) and set users.plan; the checks below already run in every recruiter endpoint."""
 
 PLANS = {
+    "pro_yearly": {"campaigns": 100, "invites_per_campaign": 200, "resumes_per_run": 100, "team_members": 10, "api": True},
     "free": {"campaigns": 100, "invites_per_campaign": 200, "resumes_per_run": 100, "team_members": 10, "api": True},
     # "pro": {...}  later: raise the numbers, nothing else needs to change.
 }
@@ -47,6 +48,9 @@ def record_for(user):
         if not rows:
             return ent
         r = rows[0]
+        if (r.get("plan_id") not in PLANS or r.get("state") not in ENT_STATES
+                or r.get("source") not in ENT_SOURCES or r.get("schema_version") != ENT_SCHEMA_VERSION):
+            return ent
         if r.get("plan_id") in PLANS:
             ent["plan_id"] = r["plan_id"]
         if r.get("state") in ENT_STATES:
@@ -67,6 +71,11 @@ def allowed(user, feature: str) -> bool:
     never to a lockout. Privacy, export, deletion, security and reporting are always allowed."""
     if feature in _ALWAYS:
         return True
+    from app import monetization
+    if monetization.enabled():
+        if feature in {'question_bank', 'resume_builder', 'org_hub'}:
+            return True
+        return monetization.paid_record(user)
     ent = record_for(user)
     feats = _FEATURES.get(ent["plan_id"], _FEATURES["free"])
     return bool(feats.get(feature, _FEATURES["free"].get(feature, False)))

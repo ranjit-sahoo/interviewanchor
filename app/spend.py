@@ -9,8 +9,8 @@ import os
 import threading
 import time
 
-TOTAL_CAP = float(os.environ.get("SPEND_TOTAL_CAP_USD", "20"))  # credit is $29.50; stay well inside it
-DAILY_CAP = float(os.environ.get("SPEND_DAILY_CAP_USD", "3"))
+TOTAL_CAP = float(os.environ.get("SPEND_TOTAL_CAP_USD", "0"))  # launch default spends nothing, including prepaid provider credits
+DAILY_CAP = float(os.environ.get("SPEND_DAILY_CAP_USD", "0"))
 # USD per 1M tokens, rounded UP from the price list and including tax, so the estimate over-counts.
 PRICES = {"ultra": (1.8, 4.5), "nano": (0.25, 0.8)}
 _lock = threading.Lock()
@@ -19,7 +19,16 @@ _ready = False
 
 
 class BudgetExceeded(RuntimeError):
-    pass
+    code = 'budget'
+
+
+class PlanRequired(BudgetExceeded):
+    code = 'plan_required'
+
+
+class QuotaExceeded(BudgetExceeded):
+    code = 'plan_quota'
+
 
 
 def _conn():
@@ -96,7 +105,14 @@ def reserve(usd: float, call_cap: int = 4000) -> tuple[str, int]:
     An uncertain failed response keeps its reservation until owner reconciliation;
     silently releasing it could allow spending beyond the cap.
     """
+    from app import monetization
+    user = monetization.validate_user()
+    # Store payment pending/ads estimates do not count as funded cash. A later
+    # owner-approved reserve must be explicitly reconciled with settled revenue.
+    if monetization.enabled() and os.environ.get('PLAY_FUNDED_RESERVE_VERIFIED') != '1':
+        raise BudgetExceeded('AI launch funding has not been verified')
     day = _today()
+    user_id = None
     micro = max(1, int(usd * 1e6) + 1)
     try:
         with _conn() as c:
@@ -115,11 +131,12 @@ def reserve(usd: float, call_cap: int = 4000) -> tuple[str, int]:
             calls = c.run("SELECT n FROM model_calls WHERE day=?", (day,))
             if total + micro > int(TOTAL_CAP * 1e6) or daily + micro > int(DAILY_CAP * 1e6) or (calls and calls[0]["n"] >= call_cap):
                 raise BudgetExceeded("AI budget reached")
+            user_id = monetization.reserve_user(c, micro, user)
             c.run("INSERT INTO spend(day,micro) VALUES(?,?) ON CONFLICT(day) DO UPDATE SET micro=spend.micro+EXCLUDED.micro", (day, micro))
             c.run("INSERT INTO model_calls(day,n) VALUES(?,1) ON CONFLICT(day) DO UPDATE SET n=model_calls.n+1", (day,))
         with _lock:
             _cache.update(t=0.0)
-        return day, micro
+        return day, micro, user_id
     except BudgetExceeded:
         raise
     except Exception as e:
@@ -127,11 +144,14 @@ def reserve(usd: float, call_cap: int = 4000) -> tuple[str, int]:
 
 
 def settle(reservation: tuple[str, int], actual_usd: float):
-    day, held = reservation
+    day, held, *identity = reservation
+    user_id = identity[0] if identity else None
     delta = max(0, int(actual_usd * 1e6) + 1) - held
     try:
         with _conn() as c:
             c.run("UPDATE spend SET micro=micro+? WHERE day=?", (delta, day))
+            if user_id:
+                c.run("UPDATE paid_ai_usage SET micro=micro+? WHERE user_id=? AND day=?", (delta, user_id, day))
         with _lock:
             _cache.update(t=0.0)
     except Exception:

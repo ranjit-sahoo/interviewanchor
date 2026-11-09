@@ -73,12 +73,18 @@ def _log_fail(model, e):
 
 
 def chat(messages, model: str = FAST_MODEL, **kw) -> str:
-    from app import spend
-
+    from app import spend, monetization
+    if monetization.enabled():
+        # One explicitly priced economical model; no silent escalation to Ultra.
+        model = FAST_MODEL
+        size = sum(len(str(m.get('content', '')).encode('utf-8')) for m in messages)
+        if size > monetization.MAX_INPUT_BYTES:
+            raise LLMError('input_limit')
+        kw['max_tokens'] = min(kw.get('max_tokens', monetization.MAX_OUTPUT_TOKENS), monetization.MAX_OUTPUT_TOKENS)
     try:
         spend.check()
     except spend.BudgetExceeded as e:
-        raise LLMError("budget") from e
+        raise LLMError(e.code) from e
     kw.setdefault("max_tokens", int(os.environ.get("LLM_MAX_TOKENS", "8000")))
     if model == FAST_MODEL and os.environ.get("FAST_THINKING") != "1":
         # Nano can spend 30+ seconds "thinking" before a short JSON answer. Turning it off is about 20x faster.
@@ -98,11 +104,15 @@ def chat(messages, model: str = FAST_MODEL, **kw) -> str:
         return response
     try:
         resp = call_once(kw)
+    except spend.BudgetExceeded as e:
+        raise LLMError(e.code) from e
     except Exception as e:  # network, auth, rate limit, timeout
         if "extra_body" in kw and getattr(e, "status_code", None) == 400:
             kw = {k: v for k, v in kw.items() if k != "extra_body"}
             try:
                 resp = call_once(kw)
+            except spend.BudgetExceeded as e2:
+                raise LLMError(e2.code) from e2
             except Exception as e2:
                 _log_fail(model, e2)
                 raise LLMError(f"model call failed: {type(e2).__name__}") from e2

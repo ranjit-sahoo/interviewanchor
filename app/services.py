@@ -2,6 +2,7 @@ import logging
 import re
 import threading
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 
 from app import basic_in, comms, db, factuality, llm, market, prompts
 
@@ -466,7 +467,8 @@ def screen_candidates(candidates: list[dict], role: str, jd: str, country: str =
     if not cands:
         raise ValueError("Add at least one candidate resume (30+ characters).")
     with ThreadPoolExecutor(max_workers=4) as ex:
-        results = list(ex.map(lambda c: _screen_one(c, role, jd, country), cands))
+        futures = [ex.submit(copy_context().run, _screen_one, c, role, jd, country) for c in cands]
+        results = [f.result() for f in futures]
     ranked = sorted((r for r in results if r["ok"]), key=lambda r: -r["score"])
     failed = [r for r in results if not r["ok"]]
     return {"ranked": ranked, "failed": failed, "total": len(results)}

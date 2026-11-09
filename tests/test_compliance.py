@@ -86,7 +86,7 @@ def test_card_page_has_report_link_and_external_js():
 def test_policy_pages_cover_current_data_use():
     priv = c.get("/privacy").text
     for needle in ("Grievance Officer", "never uploaded", "words per minute", "company name you typed",
-                   "daily-practice streak", "October 30, 2026"):
+                   "daily-practice streak", "November 10, 2026"):
         assert needle in priv, needle
     cook = c.get("/cookies").text
     assert "offline question pack" in cook and "streak" in cook
