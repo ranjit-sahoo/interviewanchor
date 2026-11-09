@@ -1235,6 +1235,25 @@ def sitemap():
     return Response(xml, media_type="application/xml")
 
 
+@app.get("/practice/sw.js")
+def free_practice_sw():
+    return FileResponse(os.path.join(STATIC, "free-sw.js"), media_type="application/javascript", headers={"Service-Worker-Allowed":"/practice", "Cache-Control":"no-cache"})
+
+
+@app.get("/practice")
+def free_practice():
+    return FileResponse(os.path.join(STATIC, "free-practice.html"), media_type="text/html")
+
+
+@app.get("/practice/privacy")
+def free_privacy():
+    return FileResponse(os.path.join(STATIC, "free-privacy.html"), media_type="text/html")
+
+
+@app.get("/practice/terms")
+def free_terms():
+    return FileResponse(os.path.join(STATIC, "free-terms.html"), media_type="text/html")
+
 @app.get("/delete-account")
 def delete_account_page():
     return FileResponse(os.path.join(STATIC, "delete-account.html"), media_type="text/html")

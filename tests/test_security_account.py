@@ -166,12 +166,13 @@ def test_account_erasure_removes_verification_and_entitlement():
         assert not conn.run('SELECT user_id FROM entitlements WHERE user_id=?', (uid,))
 
 
-def test_wrapper_contains_play_billing_permission_and_verified_service():
+def test_free_wrapper_excludes_billing_and_opens_free_practice():
     from pathlib import Path
     manifest = Path('android-twa/app/src/main/AndroidManifest.xml').read_text()
-    assert 'com.android.vending.BILLING' in manifest
-    assert 'DigitalGoodsService' in manifest
-    assert 'https://play.google.com/billing' in manifest
+    assert 'com.android.vending.BILLING' not in manifest
+    assert 'DigitalGoodsService' not in manifest
+    assert 'https://play.google.com/billing' not in manifest
+    assert 'https://mockrep.onrender.com/practice' in manifest
 
 
 def test_google_signup_requires_age_confirmation(monkeypatch):

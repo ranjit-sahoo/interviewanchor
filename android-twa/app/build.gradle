@@ -3,7 +3,7 @@ android {
  namespace 'com.ranjitsahoo.mockrep'
  compileSdk 36
  buildToolsVersion "36.0.0"
- defaultConfig { applicationId 'com.ranjitsahoo.mockrep'; minSdk 23; targetSdk 36; versionCode 8; versionName '1.0.7' }
+ defaultConfig { applicationId 'com.ranjitsahoo.mockrep'; minSdk 23; targetSdk 36; versionCode 9; versionName '1.0.8' }
  // Release signing comes ONLY from environment - never commit key or password.
  // Set MOCKREP_KEYSTORE (path to keystore) and MOCKREP_PASSWORD_FILE (path to a file holding the password).
  signingConfigs { release {
@@ -22,6 +22,5 @@ android {
 }
 dependencies {
  implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
- implementation 'com.google.androidbrowserhelper:billing:1.2.0'
 }
 configurations.all { resolutionStrategy.force 'androidx.browser:browser:1.10.0' }
