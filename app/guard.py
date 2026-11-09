@@ -62,7 +62,7 @@ def rate_limit(request: Request):
     if not limiter.check(key):
         raise HTTPException(429, "Too many requests. Please wait a minute and try again.")
     if request.method == "POST" and not daily.check(key):
-        raise HTTPException(429, "Daily free usage limit reached for this network. Please come back tomorrow.")
+        raise HTTPException(429, "Daily network safety limit reached. Free offline practice remains available.")
 
 
 class FailLimiter:

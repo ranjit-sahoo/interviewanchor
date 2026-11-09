@@ -193,7 +193,7 @@ def render_png(p: dict) -> bytes:
             d.text((sx + w / 2, 540 * S), g, font=f(17), fill="#d6e4ff", anchor="mm")
             sx += w + 10 * S
     # footer
-    d.text((60 * S, 590 * S), "Practice your own AI mock interview - free", font=f(20), fill="#9fb0e6", anchor="lm")
+    d.text((60 * S, 590 * S), "Practice free. Paid AI plans have limits.", font=f(20), fill="#9fb0e6", anchor="lm")
     d.text((1140 * S, 590 * S), (p.get("d") or "") + "  |  mockrep.onrender.com", font=f(18), fill="#6f82c8", anchor="rm")
     img = img.resize((1200, 630), Image.LANCZOS)
     buf = BytesIO()
@@ -215,4 +215,4 @@ def page(p: dict, token: str, base: str) -> str:
 img{{max-width:100%;width:900px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}}
 a.b{{display:inline-block;margin:22px 0;padding:14px 26px;background:linear-gradient(135deg,#3b66e0,#2c52c4);color:#fff;border-radius:12px;text-decoration:none;font-weight:700}}</style></head>
 <body><h1 style="font-size:22px">{title}</h1><img src="{img}" alt="Mock interview score card: {p['s']:.1f} out of 5"><br>
-<a class="b" href="{base}/">Try your own free mock interview</a><p style="color:#9fb0e6">InterviewAnchor - AI interview coach for India and US candidates &middot; <a href="/privacy" style="color:#9fb0e6">Privacy Policy</a> &middot; <a href="/terms" style="color:#9fb0e6">Terms</a> &middot; <a href="#" id="cardReport" data-token="{e(token)}" style="color:#9fb0e6">Report this card</a><span id="cardReported" style="display:none">Reported - thank you.</span></p><script src="/static/card.js" defer></script></body></html>"""
+<a class="b" href="{base}/">Explore practice and AI plans</a><p style="color:#9fb0e6">InterviewAnchor - AI interview coach for India and US candidates &middot; <a href="/privacy" style="color:#9fb0e6">Privacy Policy</a> &middot; <a href="/terms" style="color:#9fb0e6">Terms</a> &middot; <a href="#" id="cardReport" data-token="{e(token)}" style="color:#9fb0e6">Report this card</a><span id="cardReported" style="display:none">Reported - thank you.</span></p><script src="/static/card.js" defer></script></body></html>"""

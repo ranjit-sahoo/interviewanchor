@@ -65,7 +65,7 @@ def user_ai_gate(request: Request):
     """Per-account daily AI cap, on top of the per-IP caps. Signed-in users only; guests keep the IP caps."""
     u = current_user(request)
     if u and not _user_ai_limiter.check("u:" + u["id"]):
-        raise HTTPException(429, "You have reached today's free limit for AI tools on this account. Try again tomorrow.")
+        raise HTTPException(429, "The account's AI safety limit is reached. Free offline practice remains available.")
     return True
 
 
@@ -329,7 +329,7 @@ async def llm_error(_: Request, exc: llm.LLMError):
         return JSONResponse({'detail': 'Your plan AI fair-use limit has been reached. Free practice and saved results remain available.', 'code': 'plan_quota'}, status_code=429)
     if "budget" in str(exc):
         return JSONResponse(
-            {"detail": "The app's current AI capacity has been used up. The question bank, coding practice and resume builder still work. Please try again tomorrow."},
+            {"detail": "AI is paused by the processing budget or capacity limit. Free practice, saved results and data controls remain available. A total budget stop does not reset tomorrow."},
             status_code=503,
         )
     return JSONResponse({"detail": "The AI service is busy or unavailable. Please try again in a moment."}, status_code=502)

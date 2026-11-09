@@ -1,5 +1,4 @@
-"""Plan gating. No payments exist yet, so every plan is free and generous. When paid plans launch, change only
-PLANS (limits per role) and set users.plan; the checks below already run in every recruiter endpoint."""
+"""Server-verified paid AI, with free practice and data rights preserved."""
 
 PLANS = {
     "pro_yearly": {"campaigns": 100, "invites_per_campaign": 200, "resumes_per_run": 100, "team_members": 10, "api": True},
@@ -22,12 +21,6 @@ ENT_STATES = {"free", "active", "grace", "hold", "expired", "revoked"}
 ENT_SOURCES = {"none", "play", "web", "manual"}
 ENT_DEFAULT = {"plan_id": "free", "state": "free", "expiry_at": None, "source": "none",
                "last_verified_at": None, "schema_version": ENT_SCHEMA_VERSION}
-# Plan-to-feature config: exactly one entry - free is everything the app has today. Nothing is gated.
-_FEATURES = {"free": {
-    "interview": True, "negotiation": True, "resume_review": True, "resume_builder": True,
-    "jd_match": True, "prep": True, "star": True, "brief": True, "coding": True,
-    "question_bank": True, "recruiter_screen": True, "org_hub": True,
-}}
 # Never gated by plan state or flags, in any state including expired/revoked:
 _ALWAYS = {"privacy", "data_export", "account_deletion", "security", "reporting"}
 ADS = {"enabled": False}  # ad container seam: renders nothing; not remotely settable today
@@ -72,10 +65,8 @@ def allowed(user, feature: str) -> bool:
     if feature in _ALWAYS:
         return True
     from app import monetization
-    if monetization.enabled():
-        if feature in {'question_bank', 'resume_builder', 'org_hub'}:
-            return True
-        return monetization.paid_record(user)
-    ent = record_for(user)
-    feats = _FEATURES.get(ent["plan_id"], _FEATURES["free"])
-    return bool(feats.get(feature, _FEATURES["free"].get(feature, False)))
+    if feature in {'question_bank', 'resume_builder', 'org_hub'}:
+        return True
+    ai_features = {'interview', 'negotiation', 'resume_review', 'jd_match', 'prep',
+                   'star', 'brief', 'coding', 'recruiter_screen'}
+    return feature in ai_features and monetization.paid_record(user)

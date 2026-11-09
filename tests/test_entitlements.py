@@ -83,7 +83,7 @@ def test_unknown_feature_and_plan_fall_back_to_free():
     c = TestClient(app)
     uid = _user(c, "ent4@example.com")
     _set_ent(uid, plan_id="platinum-typo")
-    assert entitlements.allowed({"id": uid}, "interview") is True  # unknown plan -> free set
+    assert entitlements.allowed({"id": uid}, "interview") is False  # unknown plan never grants paid AI
     assert entitlements.allowed({"id": uid}, "not-a-feature") is False  # unknown feature -> not silently granted
 
 

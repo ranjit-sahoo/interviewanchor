@@ -5,7 +5,7 @@
  async function restoreOne(token){return request('/api/billing/play/verify',{purchase_token:token})}
  async function refresh(){
   plan=await request('/api/plan');
-  $('launchStatus').textContent=plan.active?'Your verified Pro plan is active.':plan.enabled?'Free practice is ready. Sign in to buy or restore your yearly plan.':'Pro is being prepared. No paid purchases are available yet; existing AI preview access has not been changed.';
+  $('launchStatus').textContent=plan.active?'Your verified Pro plan is active.':plan.purchase_available?'Free practice is ready. Sign in to buy or restore your yearly plan.':'Free practice is ready. AI requires a verified subscription. New paid purchases are not available yet.';
   if(!plan.purchase_available)return;
   if(!('getDigitalGoodsService' in window)){$('result').textContent='Play purchases work only in the compatible Android app installed through Google Play.';return}
   service=await window.getDigitalGoodsService('https://play.google.com/billing');

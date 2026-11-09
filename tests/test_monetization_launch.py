@@ -145,7 +145,7 @@ def test_us_allowance_not_client_region(isolated):
     with accounts.Conn() as c:
         c.run('CREATE TABLE IF NOT EXISTS play_regions (user_id TEXT PRIMARY KEY, region TEXT NOT NULL)')
         c.run('INSERT INTO play_regions(user_id,region) VALUES(?,?)',(u['id'],'US'))
-    spend.reserve(1.3)
+    with pytest.raises(spend.QuotaExceeded): spend.reserve(1.3)
 
 
 def test_feature_quota_under_shared_cap(isolated):
@@ -171,7 +171,7 @@ def test_paid_policy_hard_off_and_cohort_full(isolated,monkeypatch):
 def test_cohort_never_admits_unfunded_us_max(isolated,monkeypatch):
     monkeypatch.setattr(monetization,'plan_info',lambda user:{'purchase_available':True})
     monkeypatch.setenv('PLAY_LAUNCH_COHORT','2')
-    monkeypatch.setattr(spend,'TOTAL_CAP',5)
+    monkeypatch.setattr(spend,'TOTAL_CAP',1)
     with pytest.raises(ValueError):monetization.prepare_purchase({'id':'u'})
 
 
@@ -209,3 +209,32 @@ def test_zero_budget_stops_even_prepaid_credits(isolated,monkeypatch):
     monkeypatch.setattr(spend,'DAILY_CAP',0)
     monetization.REQUEST_USER.set(paid())
     with pytest.raises(spend.BudgetExceeded):spend.reserve(.000001)
+
+
+@pytest.mark.parametrize('value', [None, '0', 'false', '1'])
+def test_old_switch_cannot_enable_free_ai(isolated, monkeypatch, value):
+    if value is None: monkeypatch.delenv('MONETIZATION_ENABLED', raising=False)
+    else: monkeypatch.setenv('MONETIZATION_ENABLED', value)
+    assert monetization.enabled() is True
+    assert TestClient(main.app).post('/api/session', json={}).status_code == 401
+    with pytest.raises(spend.PlanRequired): spend.reserve(.001)
+
+
+def test_both_regions_share_cost_ceiling(isolated):
+    assert monetization.REGION_BUDGET_USD == {'IN': 1.20, 'US': 1.20}
+
+
+def test_verified_paid_session_passes_new_boundary(isolated, monkeypatch):
+    from app import db
+    monkeypatch.setattr(db, "_ready", False)
+    user = paid()
+    monkeypatch.setattr(main, 'current_user', lambda request: user)
+    client = TestClient(main.app)
+    response = client.post('/api/session', json={'resume': 'QA engineer with five years of automation and API testing experience.', 'role': 'QA Engineer', 'country': 'India', 'followups': False})
+    assert response.status_code == 200
+    assert response.json()['session_id']
+
+
+def test_free_account_cannot_obtain_ai(isolated, monkeypatch):
+    monkeypatch.setattr(main, 'current_user', lambda request: {'id': 'free-user'})
+    assert TestClient(main.app).post('/api/session', json={}).status_code == 402

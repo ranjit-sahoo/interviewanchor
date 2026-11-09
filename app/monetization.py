@@ -11,7 +11,7 @@ import time
 REQUEST_USER = contextvars.ContextVar('ia_paid_request_user', default=None)
 REQUEST_FEATURE = contextvars.ContextVar('ia_paid_feature', default='interview')
 FEATURE_LIMITS = {'interview': (8, 40), 'resume': (3, 15), 'prep': (4, 20), 'coding': (3, 20), 'negotiation': (4, 20), 'recruiter': (3, 15)}
-REGION_BUDGET_USD = {'IN': 1.20, 'US': 6.00}
+REGION_BUDGET_USD = {'IN': 1.20, 'US': 1.20}  # identical conservative proposal, final sales review pending
 MAX_INPUT_BYTES = 48000
 MAX_OUTPUT_TOKENS = 4000
 DAILY_CALLS = 8
@@ -22,7 +22,7 @@ PACKAGE_NAME = 'com.ranjitsahoo.mockrep'
 
 
 def enabled():
-    return os.environ.get('MONETIZATION_ENABLED') == '1'
+    return True  # paid-only policy cannot be disabled by an old environment switch
 
 
 def paid_record(user):

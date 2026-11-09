@@ -9,8 +9,8 @@ import os
 import threading
 import time
 
-TOTAL_CAP = float(os.environ.get("SPEND_TOTAL_CAP_USD", "0"))  # launch default spends nothing, including prepaid provider credits
-DAILY_CAP = float(os.environ.get("SPEND_DAILY_CAP_USD", "0"))
+TOTAL_CAP = min(20.0, max(0.0, float(os.environ.get("SPEND_TOTAL_CAP_USD", "20"))))  # owner-approved lifetime ceiling; cannot raise via env
+DAILY_CAP = min(TOTAL_CAP, max(0.0, float(os.environ.get("SPEND_DAILY_CAP_USD", "3"))))
 # USD per 1M tokens, rounded UP from the price list and including tax, so the estimate over-counts.
 PRICES = {"ultra": (1.8, 4.5), "nano": (0.25, 0.8)}
 _lock = threading.Lock()
