@@ -6,16 +6,18 @@
  async function refresh(){
   plan=await request('/api/plan');
   $('launchStatus').textContent=plan.active?'Your verified Pro plan is active.':plan.purchase_available?'Free practice is ready. Sign in to buy or restore your yearly plan.':'Free practice is ready. AI requires a verified subscription. New paid purchases are not available yet.';
-  if(!plan.purchase_available)return;
   if(!('getDigitalGoodsService' in window)){$('result').textContent='Play purchases work only in the compatible Android app installed through Google Play.';return}
   service=await window.getDigitalGoodsService('https://play.google.com/billing');
+  $('restorePlan').disabled=false;
+  if(!plan.purchase_available)return;
   const products=await service.getDetails([plan.product_id]);details=products.find(x=>x.itemId===plan.product_id);
   if(!details||!details.price)throw new Error('This plan is not available from Google Play yet.');
   $('storePrice').textContent=new Intl.NumberFormat(navigator.language,{style:'currency',currency:details.price.currency}).format(details.price.value)+' / year';
-  $('buyPlan').textContent='Buy one year on Google Play';$('buyPlan').disabled=false;$('restorePlan').disabled=false;
+  $('buyPlan').textContent='Buy one year on Google Play';$('buyPlan').disabled=plan.active;$('restorePlan').disabled=false;
+  if(plan.active)$('buyPlan').textContent='Your yearly plan is already active';
  }
  $('buyPlan').onclick=async()=>{
-  if(!service||!details||!plan.purchase_available)return;
+  if(!service||!details||!plan.purchase_available||plan.active)return;
   let response;try{
    const me=await request('/api/auth/me');if(!me.user)throw new Error('Sign in to InterviewAnchor first, then return to Plans.');
    $('buyPlan').disabled=true;
@@ -25,7 +27,7 @@
    const token=response.details&&response.details.purchaseToken;if(!token)throw new Error('Google Play did not return a purchase to verify.');
    const verified=await restoreOne(token);if(!verified.ok||!['active','grace'].includes(verified.state))throw new Error('Payment is pending. Access starts only when Google Play confirms payment.');
    await response.complete('success');response=null;$('result').textContent='Purchase verified. Your yearly plan is active.';await refresh();
-  }catch(e){if(response)try{await response.complete('fail')}catch(_){}$('result').textContent=e.name==='AbortError'?'Purchase canceled. No plan was granted.':e.message+' If Google Play took payment, use Restore purchase; do not buy twice.';}finally{$('buyPlan').disabled=!service}
+  }catch(e){if(response)try{await response.complete('fail')}catch(_){}$('result').textContent=e.name==='AbortError'?'Purchase canceled. No plan was granted.':e.message+' If Google Play took payment, use Restore purchase; do not buy twice.';}finally{$('buyPlan').disabled=!service||!details||!plan.purchase_available||plan.active}
  };
  $('restorePlan').onclick=async()=>{try{
   const me=await request('/api/auth/me');if(!me.user)throw new Error('Sign in to the InterviewAnchor account that bought the plan.');

@@ -1,0 +1,27 @@
+DRAFT ONLY - do not upload until separately approved. Staged1.0.7 no-ad, sales-disabled configuration.
+
+App name: InterviewAnchor
+Short description: Practise interviews, improve your resume and prepare clear answers.
+
+Full description:
+Prepare for your next interview with practice questions, resume tools and structured feedback.
+
+FREE PRACTICE
+Choose a job and work through curated questions, model answers and tips. Downloaded practice files support offline study. Adapt examples to your real experience. Manual resume formatting and device recording/playback are free. Browser speech recognition may require internet and your browser provider's speech service; typing is available instead.
+
+PLANNED YEARLY AI PLAN
+Personalized mock interviews, feedback/report generation, resume analysis, JD matching, AI coding help and recruiter AI screening require a signed-in account and a verified paid yearly plan. Paid purchases are not available in this staged release. AI is not unlocked by watching ads.
+
+When activated after testing, the proposed plan is prepaid for one year with no automatic renewal. Usage is limited, not unlimited. One task can use several model calls. Daily/monthly calls, feature limits, request sizes and annual processing allowances all apply; the first reached limit pauses new AI calls. See Plans before any purchase. Google Play shows the final localized price and terms before payment.
+
+PRIVACY AND CONTROL
+Accounts are optional for free practice. Sign in for saved history and account tools. Export or delete your saved account data from the app. Recruiter screening has candidate notice and deletion controls. This staged release has no ads.
+
+AI results, scores and salary estimates can be wrong. This is a coaching tool, not a hiring guarantee or automated hiring decision system. Check facts before using generated content. For adults18+.
+
+Privacy: https://mockrep.onrender.com/privacy
+Deletion: https://mockrep.onrender.com/delete-account
+Plans: https://mockrep.onrender.com/plans
+Support: appsupportdesk.in@gmail.com
+
+Reviewer access and required app-content forms remain pending Console/device review. Do not submit a paid launch listing while the backend is still the old deployment.

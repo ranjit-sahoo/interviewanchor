@@ -152,6 +152,9 @@ def verify(user, token):
         elif state in ('active', 'grace') and data.get('acknowledgementState') != 'ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED':
             raise InvalidPurchase('Unknown purchase acknowledgement state')
         if state == 'free':
+            current = c.run('SELECT token_hash FROM play_current WHERE user_id=?', (user['id'],))
+            if current and current[0]['token_hash'] == hashed:
+                c.run("UPDATE entitlements SET state='hold',last_verified_at=? WHERE user_id=?", (time.time(), user['id']))
             return {'ok': False, 'state': 'pending', 'plan_id': 'free'}
         c.run('INSERT INTO play_receipts(token_hash,user_id,token,created) VALUES(?,?,?,?) ON CONFLICT(token_hash) DO NOTHING',
               (hashed, user['id'], token, time.time()))

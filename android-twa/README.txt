@@ -1,5 +1,5 @@
-InterviewAnchor Android 1.0.6 source (free launch: no billing permission or billing SDK)
-Package com.ranjitsahoo.mockrep, versionCode 7, min Android 23, target Android 36.
+InterviewAnchor Android 1.0.7 staged source (Play Billing bridge included; sales remain disabled)
+Package com.ranjitsahoo.mockrep, versionCode 8, min Android 23, target Android 36.
 Chrome Trusted Web Activity of https://mockrep.onrender.com/; launch link now /#sessions.
 Uses browser site data, voice recognition, uploads and download behavior. No bundled website or WebView.
 Build: Java 17, Android SDK 36/build-tools 36.0.0, Gradle 8.11.1, AGP 8.9.1.

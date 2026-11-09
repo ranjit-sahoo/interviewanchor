@@ -1,6 +1,6 @@
 # Google Play Data safety form - exact answers for InterviewAnchor
 
-Last reviewed: November 9, 2026 (matches /privacy section 3A). Tick these in Play Console > App content > Data safety.
+Last reviewed: November 10, 2026 (matches /privacy section 3A). Tick these in Play Console > App content > Data safety.
 
 ## Top-level
 - Does your app collect or share any of the required user data types? **Yes**
@@ -17,6 +17,9 @@ Last reviewed: November 9, 2026 (matches /privacy section 3A). Tick these in Pla
 - **Phone number**: Collected = Yes, Shared = No. Purpose: App functionality. Optional = Yes. (Recruiter screening candidates only, and recruiters adding candidates to their own pipeline.) Deleted automatically after the recruiter-chosen retention (7-90 days).
 - **User IDs**: Collected = Yes, Shared = No. Purpose: Account management. Optional = Yes. (Internal account ID; Google account ID when using Google sign-in.)
 
+### Financial info
+- **Purchase history**: Collected = Yes when billing is enabled, Shared = No except applicable service-provider processing. Purpose: App functionality, Account management, Fraud prevention/security. Required for a paid plan, not for free practice. Receipt tokens, product/expiry/region/state and usage counters are retained by the backend; raw tokens are not exported and are removed on account deletion. No card number or bank account data is received by this app. The form must describe the actual release configuration, not planned ads.
+
 ### Files and docs
 - **Files and docs**: Collected = Yes, Shared = No. Purpose: App functionality. Optional = Yes. (Resume PDF/DOCX uploads and pasted resume/JD text.) Guest uploads deleted within 2 days; saved items deleted with the account.
 
@@ -26,7 +29,7 @@ Last reviewed: November 9, 2026 (matches /privacy section 3A). Tick these in Pla
 ### App info and performance
 - Crash logs / Diagnostics: **Not collected** (no crashlytics, no third-party analytics; first-party visit counting disabled in the launch build).
 
-### Location, Health & fitness, Messages, Photos & videos, Audio, Calendar, Contacts, Financial info, Web browsing, Device or other IDs
+### Location, Health & fitness, Messages, Photos & videos, Audio, Calendar, Contacts, Web browsing, Device or other IDs
 - **Not collected**. (The app server never receives audio. Optional speech recognition is provided by the browser and may send audio to its own provider, as the privacy policy explains. Local playback recordings stay in browser memory. Review the browser-provider boundary against the current form before submitting; do not claim that speech recognition is always on-device. No ad ID, no Android ID collection.)
 
 ## Sharing

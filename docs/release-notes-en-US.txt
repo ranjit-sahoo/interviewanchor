@@ -1,0 +1,5 @@
+InterviewAnchor1.0.7 - staged, not published
+- Free offline practice and clear subscription-only AI boundaries.
+- Prepared yearly prepaid Play billing with server-side purchase verification.
+- Clearer privacy, adults-only account policy and published usage limits.
+- Purchases and ads remain disabled pending setup and testing.

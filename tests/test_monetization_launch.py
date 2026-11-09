@@ -245,3 +245,31 @@ def test_owner_updated_india_price_and_us_unchanged(isolated):
     assert policy['proposed_price_inr'] == 599
     assert policy['proposed_price_usd'] == 49
     assert policy['regional_processing_allowance_usd'] == {'IN': 1.20, 'US': 1.20}
+
+
+def test_pending_current_receipt_removes_cached_paid_access(isolated, monkeypatch):
+    monkeypatch.setattr(playbilling, 'configured', lambda: True)
+    monkeypatch.setattr(playbilling, 'fetch_purchase', lambda token: receipt())
+    user = {'id': 'pending-user'}
+    playbilling.verify(user, 'test-current-purchase-token')
+    assert monetization.paid_record(user)
+    monkeypatch.setattr(playbilling, 'fetch_purchase', lambda token: receipt('SUBSCRIPTION_STATE_PENDING'))
+    assert playbilling.verify(user, 'test-current-purchase-token')['ok'] is False
+    assert not monetization.paid_record(user)
+
+
+def test_pending_other_receipt_does_not_replace_active_plan(isolated, monkeypatch):
+    monkeypatch.setattr(playbilling, 'configured', lambda: True)
+    monkeypatch.setattr(playbilling, 'fetch_purchase', lambda token: receipt())
+    user = {'id': 'active-user'}
+    playbilling.verify(user, 'test-current-purchase-token')
+    monkeypatch.setattr(playbilling, 'fetch_purchase', lambda token: receipt('SUBSCRIPTION_STATE_PENDING'))
+    playbilling.verify(user, 'test-other-pending-token')
+    assert monetization.paid_record(user)
+
+
+def test_privacy_distinguishes_paid_counters_from_analytics(isolated):
+    client = TestClient(main.app)
+    assert 'Paid-plan model-call and feature-use counters' in client.get('/privacy').text
+    assert 'Accounts are for adults only' in client.get('/').text
+    assert 'sets one cookie' not in client.get('/cookies').text

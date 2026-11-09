@@ -13,7 +13,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 
 <h2>1. What we collect</h2>
 <ul>
-<li><b>If you just use the site (no account):</b> the text you paste or upload (resume, job description, interview answers, salary details) is used to produce your result. Interview and negotiation sessions are kept on our server for up to 2 days so a session can continue, then deleted. We do not keep guest resumes or answers beyond that.</li>
+<li><b>If you just use the site (no account):</b> free offline practice and local resume formatting stay on your device. Personalized AI tools require a signed-in account and a verified paid plan. The text you submit to online tools (resume, job description, interview answers, salary details) is used to produce your result. Interview and negotiation sessions are kept on our server for up to 2 days so a session can continue, then deleted. We do not keep guest resumes or answers beyond that.</li>
 <li><b>If you use Practice Sessions:</b> recordings for "hear yourself" playback stay in your browser's memory and are never uploaded. Speech-to-text happens in your browser (see section 3). If you are signed in, we store only the numbers - words per minute, filler-word count and word count per session - never the audio, transcript or answer text, so your progress chart works. Deleting your account removes them.</li>
 <li><b>If you ask us to add a company:</b> we store the company name you typed and, only if you are signed in, your email address, so we can tell you when it is added. Deleting your account removes these requests.</li>
 <li><b>If you create an account:</b> your email address and a password (stored only as a salted one-way password hash, never in readable form; new passwords use Argon2id and legacy scrypt hashes upgrade on login). If you sign in with Google instead, we receive from Google only your email address and Google account ID (plus the display name and picture shown in the sign-in box, which we do not store); we never see your Google password. We also keep what you choose to save to your history (for example a STAR answer, prep pack or review) and your per-skill interview scores over time (scores only, never your answers or resume). Recruiter screening answers are a separate case, see 2A.</li>
@@ -30,7 +30,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 <li>To generate your interview questions, feedback, resume reviews, prep packs and other results.</li>
 <li>To let you log in and see your saved history and progress.</li>
 <li>To email you about the paid plan if you joined the waitlist.</li>
-<li>To keep the service secure and within free-use limits (abuse and rate limiting use your network address briefly in memory, not in the database).</li>
+<li>To keep the service secure and within published usage limits (abuse and rate limiting use your network address briefly in memory, not in the database).</li>
 </ul>
 <p>We do not sell your resume or answers or use them to train models. Ads are not serving yet. Planned Google ads will be restricted to public practice content, never resume input, answer recording or private reports. Before activation, we will publish the ad-provider details and enable privacy choices, including US state opt-outs and restricted data processing.</p>
 
@@ -65,7 +65,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 </ul>
 
 <h2>4. Analytics</h2>
-<p>Analytics are disabled in the launch build. No visit counts, feature-use counts or visitor hashes are collected. There are no third-party analytics scripts. Hosting providers may still keep technical security logs as described in section 3.</p>
+<p>Analytics are disabled in the launch build. No analytics visit counts or visitor hashes are collected. Paid-plan model-call and feature-use counters are collected only to enforce allowances, not for advertising or audience analytics. There are no third-party analytics scripts. Hosting providers may still keep technical security logs as described in section 3.</p>
 
 <h2>5. How long we keep data and how to delete it</h2>
 <ul>
@@ -74,7 +74,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 <li>Recruiter company data (campaigns, pipeline, team, activity log): until the owner deletes the account or the campaign or pipeline entry. Deleting an owner account removes the company data and its campaigns and screening results; team members then keep plain candidate accounts.</li>
 <li>Account data and saved history: until you delete it. Logged-in users can remove individual saved items, or choose <b>Delete account</b> (also available at <a href="/delete-account">/delete-account</a>), which removes your account, saved history, progress scores and login sessions.</li>
 <li>Waitlist email: until the paid plan is announced or you ask us to remove it (email us below).</li>
-<li>Usage counts: daily totals with no personal information.</li><li>Content reports: up to 12 months, then deleted.</li>
+<li>Paid AI usage counts and feature totals are linked to your account until account deletion. The rolling allowance calculation uses the preceding 366 days; older counters may remain until you delete the account. Global spending totals are not linked to a user.</li><li>Content reports: up to 12 months, then deleted.</li>
 <li>Technical logs kept by our hosting providers follow their own short retention.</li>
 </ul>
 
@@ -88,7 +88,7 @@ a{color:#2f56d4}a:focus-visible{outline:3px solid #2f56d4;outline-offset:2px}.fo
 <p>Connections use HTTPS. New passwords are hashed with Argon2id. Older scrypt hashes are upgraded when you next log in. Login sessions are random tokens stored hashed in an HttpOnly cookie. Sign-in attempts are rate limited and accounts lock for 30 minutes after repeated failures. No system is perfectly secure, so please do not put sensitive information such as government ID numbers in your resume text.</p>
 
 <h2>8. Children</h2>
-<p>InterviewAnchor is for adults and job seekers. It is not meant for children under 16, and we do not knowingly collect their data.</p>
+<p>InterviewAnchor is for adults and job seekers. Accounts require users to confirm they are 18 or older. It is not designed for children under 18, and we do not knowingly allow them to create accounts.</p>
 
 <h2>9. Changes</h2>
 <p>If we change how we handle data (for example when a paid plan launches), we will update this page and the date above.</p>

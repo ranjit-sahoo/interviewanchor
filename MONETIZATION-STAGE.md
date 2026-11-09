@@ -5,7 +5,7 @@
 ## Implemented and checked
 - Exact InterviewAnchor branding; package com.ranjitsahoo.mockrep and original signing identity preserved.
 - Android 1.0.7/code 8, target SDK 36, Play Billing 8.3.0 dependency. Signed APK and AAB built. APK signatures verified.
-- 326 automated tests passed after the new policy change. Legacy functionality tests replace the payment boundary only in the test process; dedicated billing integration tests keep it active. Local mobile 390px and desktop 1280px Plans page rendered, no horizontal overflow or page script errors, purchase button disabled.
+- 329 automated tests passed after the new policy change. Legacy functionality tests replace the payment boundary only in the test process; dedicated billing integration tests keep it active. Local mobile 390px and desktop 1280px Plans page rendered, no horizontal overflow or page script errors, purchase button disabled.
 - Yearly prepaid/no automatic renewal proposal: India Rs 599, US $49. Actual localized Google Play price is required before purchase.
 - Purchase verification uses Google Publisher API, exact product/base plan, verified region IN/US, state/expiry, acknowledgement and receipt-to-account binding. Unknown/failed receipt checks cannot grant access. Replaced tokens cannot restore older access.
 - Authenticated Pub/Sub notification receiver is implemented but not configured or tested against real pushes. It re-fetches purchase state, including voided-purchase notifications, rather than trusting the notification payload.
@@ -27,7 +27,7 @@
 - AdSense publisher pub-1288620703713535 created on ranjitkumarsahoo77@gmail.com, India.
 - Existing Individual payments profile ending 5974 linked. AdSense dashboard confirmed "We've got your info".
 - Website mockrep.onrender.com requires review; not approved. Exact inert verification meta tag staged, not deployed. No ad-serving script is live.
-- Play merchant setup was submitted at 2:16 AM IST with the existing Individual profile. Approved public name RANJIT KUMAR SAHOO, support appsupportdesk.in@gmail.com, Computer Software category, statement name RANJITSAHOO. Owner explicitly approved public use of his home address at 2:13:40 AM IST. That address was reused. India-only and cross-border payment accounts created; cross-border BillDesk PA-CB KYC is in progress, not complete. The15% fee enrollment is completed and verified after explicit owner approval; both associated-account declarations are No. BillDesk application2611094300 is at Personal Info: email OTP passed, Individual and resident Indian Yes selected under owner approval. PAN, PAN name, DOB, mobile, additional family/address details and consents remain unsubmitted. Owner must enter sensitive KYC details directly.
+- Play merchant setup was submitted at 2:16 AM IST with the existing Individual profile. Approved public name RANJIT KUMAR SAHOO, support appsupportdesk.in@gmail.com, Computer Software category, statement name RANJITSAHOO. Owner explicitly approved public use of his home address at 2:13:40 AM IST. That address was reused. India-only and cross-border payment accounts created; cross-border BillDesk PA-CB KYC is in progress, not complete. The15% fee enrollment is completed and verified after explicit owner approval; both associated-account declarations are No. BillDesk application2611094300 is at Personal Info: email OTP passed, Individual and resident Indian Yes selected under owner approval. The owner subsequently entered identity details and reported DigiLocker completion. Last observed BillDesk page still showed Personal Info/Aadhaar-mobile confirmation and Play still showed InProgress. Full KYC completion is unconfirmed; follow-up is paused with main. Do not redo the identity flow.
 - Support Gmail forwarding is saved and verified to ranjitkumarsahoo77@gmail.com with a copy kept in the support Inbox. Settings-level verification completed; no test email sent.
 
 ## Remaining gates
@@ -51,3 +51,6 @@
 - https://support.google.com/adsense/answer/2490070?hl=en
 
 Nothing uploaded to Google Play. No paid sale or ad serving enabled.
+
+## Latest local recheck
+See docs/release-check-2026-11-10.md for329tests,72-package audit, Android lint/build,32viewport checks, billing UI fixes, policy corrections and exact external gates. Current listing is docs/listing-en-US.txt; older release artifacts are historical, not current submission copy.
