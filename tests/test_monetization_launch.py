@@ -238,3 +238,10 @@ def test_verified_paid_session_passes_new_boundary(isolated, monkeypatch):
 def test_free_account_cannot_obtain_ai(isolated, monkeypatch):
     monkeypatch.setattr(main, 'current_user', lambda request: {'id': 'free-user'})
     assert TestClient(main.app).post('/api/session', json={}).status_code == 402
+
+
+def test_owner_updated_india_price_and_us_unchanged(isolated):
+    policy = monetization.plan_info()
+    assert policy['proposed_price_inr'] == 599
+    assert policy['proposed_price_usd'] == 49
+    assert policy['regional_processing_allowance_usd'] == {'IN': 1.20, 'US': 1.20}

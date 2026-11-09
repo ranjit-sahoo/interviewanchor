@@ -1,24 +1,16 @@
-# InterviewAnchor premium plan - NOT READY, NOT ENABLED
+# InterviewAnchor paid-AI plan - staged, not enabled for sale
 
-Owner decision, 2026-10-30 04:46 IST:
-- At Play launch all features are free for the first 2-3 months, with no charges anywhere.
-- Later prices: yearly INR 499; lifetime INR 999. No monthly product.
-- Premium must be a separate build, never included in the free-launch build.
-- Ads and payments remain OFF. No Play publication is authorized.
-- Exact activation date remains undecided. Do not start billing automatically.
+Current owner decisions, November 10, 2026 IST, replace the prior free-AI launch, lifetime plan and separate premium-build proposals.
 
-The premium-billing branch is a prototype, not a release. It must not be enabled.
-The free-launch Android manifest has no billing permission or billing SDK.
+- India Rs 599/year and US $49/year, prepaid with no automatic renewal.
+- All cost-bearing AI is subscription-only. Watching ads never unlocks AI.
+- Free offline practice stays available, with planned ads subject to approval/privacy setup.
+- Overall AI spending has a US$20 hard ceiling. Old live AI is OFF until a separately approved gated deployment.
+- Same conservative proposed processing allowance for both countries: US$1.20 per rolling366days, under the owner's Rs599 per-subscriber ceiling. Final sales terms still need review.
+- Shared8model calls/day and60/month, plus per-feature limits. These count calls, not completed tasks; processing limits can stop AI earlier.
+- No automatic lifetime, monthly, trial conversion, unlimited or auto-renewal product.
+- Google Play purchases must use verified localized product details and server-side Publisher API verification. No client field, IP, ad impression or cached receipt can grant paid AI.
+- Paid-only policy cannot be disabled through the old MONETIZATION_ENABLED switch.
+- Sales, production deployment and Play upload are distinct gates; no sales or upload without the owner's separate approval.
 
-Before premium is ready:
-- Bind each Play token to the authenticated account and reject replay across accounts.
-- Validate product, package, account binding, purchase state and expiry from Google's response.
-- Reject missing fields, canceled/refunded purchases and expired subscriptions; recheck revocations.
-- Grant paid-through access when auto-renewal is canceled, without charging again.
-- Acknowledge verified purchases through the supported Play flow.
-- Add a working cancellation-management link and implement the 24-hour renewal notice, not merely its copy.
-- Prices displayed must come from Play product details and match INR 499 yearly / INR 999 lifetime.
-- Finish six independent end-to-end and security rounds including adverse cases.
-- Obtain owner approval for activation timing and confirm the product setup in Play Console.
-
-No payment-method or purchase testing against real money is authorized by this plan.
+See MONETIZATION-STAGE.md for actual tests, account blockers and release status. No sale or launch readiness is claimed by this design.

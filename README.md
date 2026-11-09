@@ -102,24 +102,20 @@ AI feedback and salary figures are estimates, not guarantees. The free demo host
 ## Roadmap
 InterviewAnchor is built for educated professionals in India and the US. The live app stays fully free and open (no payment, no paywall) through the hackathon judging period ending Dec 15, 2026.
 
-Planned after Dec 15, 2026: a paid yearly plan for saved history and unlimited prep packs. Not built yet; no payment code exists in this repository.
+## Current monetization policy (November 10, 2026)
 
-Rename: the product was called InterviewPilot during the hackathon build and is now InterviewAnchor (renamed Oct 5, 2026, before the Oct 30 deadline). Target domains are mockrep.com and mockrep.in (not registered yet), and the social handle pattern is @getmockrep. The live URL is the Render address https://mockrep.onrender.com (the old interviewpilot-bdzx address was retired on Oct 5, 2026) until a domain is bought.
+Earlier pricing, free-AI, lifetime, separate premium build, trial conversion, geographic-card routing and alternative payment proposals are superseded.
 
-When paid plans launch: add trial reminders (notify before any trial converts to billing) and a clear auto-renewal disclosure (price, renewal date, how to cancel) before payment, and update the Privacy Policy. Documentation only for now.
+- India Rs599/year; US $49/year, prepaid with no automatic renewal. Final localized Google Play price/tax must be read before purchase.
+- Every paid-model AI feature requires a server-verified active subscription. Ads do not unlock AI. Curated questions, coding practice, local recording and manual resume formatting remain free.
+- Overall AI ceiling is US$20, with atomic pre-request cost reservations; setting a higher environment cap cannot raise it. Old production is currently AI-OFF pending a separately approved gated deployment.
+- Same conservative proposed US$1.20 rolling366-day processing allowance for India/US, under the owner's Rs599 per-subscriber ceiling. Final sale terms still need approval.
+- Limits are8actual model calls/day and60/month plus feature sublimits. One task may use several calls; the processing allowance can stop calls earlier.
+- Store region and entitlement come from verified Google Play data, not client country/IP/card guesses. Publisher API, receipt binding, expiry/refund/revocation, RTDN and real licensed-device tests are mandatory before sale.
+- No paid sale, Play upload or production release without separate owner approval. No automatic ad activation or promise of ad income.
+- Preserve the existing package com.ranjitsahoo.mockrep and signing identity. Live hostname remains mockrep.onrender.com pending a deliberate migration.
 
-Domain day checklist (when the custom domain lands): (a) decide main domain vs subdomain separation, for example the marketing site on the main domain and the app on app.<domain>; (b) keep transactional email (receipts, password and account mail) separate from marketing email, on different sending subdomains, so marketing complaints never hurt delivery of account mail; (c) verify the domain in Google Search Console and submit /sitemap.xml. robots.txt and sitemap.xml are already served (public pages only; /api/ and share cards are disallowed), and PUBLIC_BASE_URL must be set to the new domain.
-
-Pricing rule (documentation only):
-- Rs 499 per year for visitors with an India IP address. $49 per year for every other country (US, UK, UAE, Canada and anywhere else).
-- The pricing country is never chosen by the user. IP geolocation alone sets the price shown.
-- Implemented today for content: the app takes its country from the CDN IP check (Cloudflare `cf-ipcountry`) on the server and ignores the country a client posts; the country chips are locked once detected. When payments launch, price and currency must be decided by that same server-side IP check, never from the browser. An IP lock is a deterrent, not proof: VPNs and proxies can change the detected country, which is why the Rs 499 tier also requires an Indian-issued card.
-- The Rs 499 tier requires BOTH an India IP address AND an Indian-issued card at payment (for example Razorpay for INR).
-- The $49 tier has no card-country requirement. Indians living abroad, including those with Indian cards, pay $49 (for example via Stripe).
-- IP location is not a guarantee of physical location. This is an eligibility rule, not an anti-abuse guarantee; a small amount of VPN leakage is accepted at this scale.
-
-Business structure plan (documentation only): InterviewAnchor stays the author's personal product, separate from any other company. Payments start with an individual (unregistered) Razorpay account for India and Lemon Squeezy for international customers. After roughly 100 paying customers, the author plans to register a One Person Company (OPC) and move the business under it.
-**Payment security rule (applies to the future paid plan):** every price calculation and all payment verification happens strictly on the server. The client only asks to start a checkout for a plan name; the server chooses the amount and currency, creates the Razorpay order or Lemon Squeezy checkout itself, and unlocks a plan only after verifying the Razorpay payment signature (HMAC-SHA256 of order id and payment id with the secret key) or the Lemon Squeezy webhook signature. Amounts, plan state and country are never trusted from the browser, webhooks are idempotent, and no card data ever touches our servers.
+See MONETIZATION-STAGE.md and docs/premium-design.md. Staged code is not a deployment or launch-ready claim.
 
 ### Android release checklist (Google Play, planned, not started)
 

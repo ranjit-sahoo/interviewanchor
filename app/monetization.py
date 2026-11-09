@@ -106,7 +106,7 @@ def reserve_user(c, usd_micro, user, now=None):
 
 def plan_info(user=None):
     return {'enabled': enabled(), 'plan_id': 'pro_yearly', 'product_id': PRODUCT_ID,
-            'proposed_price_inr': 499, 'proposed_price_usd': 49, 'allowed_regions': ['IN', 'US'],
+            'proposed_price_inr': 599, 'proposed_price_usd': 49, 'allowed_regions': ['IN', 'US'],
             'regional_processing_allowance_usd': REGION_BUDGET_USD, 'feature_model_call_limits': FEATURE_LIMITS,
             'max_input_bytes': MAX_INPUT_BYTES, 'max_output_tokens': MAX_OUTPUT_TOKENS, 'duration': 'one year', 'renewal_type': 'prepaid_non_renewing',
             'active': paid_record(user) if user else False,
