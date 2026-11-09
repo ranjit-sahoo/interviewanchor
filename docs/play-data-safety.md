@@ -1,6 +1,6 @@
 # Google Play Data safety form - exact answers for InterviewAnchor
 
-Last reviewed: October 30, 2026 (matches /privacy section 3A). Tick these in Play Console > App content > Data safety.
+Last reviewed: November 9, 2026 (matches /privacy section 3A). Tick these in Play Console > App content > Data safety.
 
 ## Top-level
 - Does your app collect or share any of the required user data types? **Yes**
@@ -27,7 +27,7 @@ Last reviewed: October 30, 2026 (matches /privacy section 3A). Tick these in Pla
 - Crash logs / Diagnostics: **Not collected** (no crashlytics, no third-party analytics; first-party visit counting disabled in the launch build).
 
 ### Location, Health & fitness, Messages, Photos & videos, Audio, Calendar, Contacts, Financial info, Web browsing, Device or other IDs
-- **Not collected**. (Microphone is used on-device for speech-to-text and local playback only; audio never leaves the device, so "Audio" = not collected. No ad ID, no Android ID collection.)
+- **Not collected**. (The app server never receives audio. Optional speech recognition is provided by the browser and may send audio to its own provider, as the privacy policy explains. Local playback recordings stay in browser memory. Review the browser-provider boundary against the current form before submitting; do not claim that speech recognition is always on-device. No ad ID, no Android ID collection.)
 
 ## Sharing
 - No data is sold or shared with third parties for marketing or advertising.
@@ -35,7 +35,7 @@ Last reviewed: October 30, 2026 (matches /privacy section 3A). Tick these in Pla
 
 ## Other Play Console declarations (App content)
 - **Ads**: No, the app does not contain ads.
-- **Target audience and content**: Adults 18+. NOT designed for children (privacy policy states 16+; no child-directed content, so Families policy does not apply).
+- **Target audience and content**: Adults 18+. NOT designed for children (signup requires 18+ consent; no child-directed content, so Families policy does not apply).
 - **Privacy policy URL**: https://mockrep.onrender.com/privacy
 - **News apps / COVID / Government apps**: No.
 - **Data deletion URL** (Account deletion section): https://mockrep.onrender.com/delete-account

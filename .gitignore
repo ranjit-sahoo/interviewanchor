@@ -2,3 +2,8 @@ __pycache__/
 .env
 *.sqlite3
 .venv/
+
+# Local Android build output
+android-twa/.gradle/
+android-twa/**/build/
+android-twa/local.properties
