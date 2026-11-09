@@ -3,7 +3,7 @@ android {
  namespace 'com.ranjitsahoo.mockrep'
  compileSdk 36
  buildToolsVersion "36.0.0"
- defaultConfig { applicationId 'com.ranjitsahoo.mockrep'; minSdk 23; targetSdk 36; versionCode 9; versionName '1.0.8' }
+ defaultConfig { applicationId 'com.ranjitsahoo.mockrep'; minSdk 24; targetSdk 36; versionCode 10; versionName '1.0.9' }
  // Release signing comes ONLY from environment - never commit key or password.
  // Set MOCKREP_KEYSTORE (path to keystore) and MOCKREP_PASSWORD_FILE (path to a file holding the password).
  signingConfigs { release {
