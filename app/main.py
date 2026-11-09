@@ -203,17 +203,23 @@ import logging as _logging
 class _AccessLogSidFilter(_logging.Filter):
     import re as _re
 
-    _SID = _re.compile(r"(/api/session/)[0-9a-f]{24}")
+    _SID = _re.compile(r"(/api/session/)[0-9a-f]{24}|((?:/api)?/s/)[A-Za-z0-9_-]{20,}")
+
+    @classmethod
+    def _mask(cls, value):
+        return cls._SID.sub(lambda m: (m.group(1) or m.group(2)) + "***", value)
 
     def filter(self, record):
-        try:
-            msg = record.getMessage()
-            masked = self._SID.sub(r"\1***", msg)
-            if masked != msg:
-                record.msg = masked
-                record.args = ()
-        except Exception:
-            pass
+        # Uvicorn's AccessFormatter unpacks the original five arguments. Keep
+        # their shape, and redact the path before either formatter sees it.
+        if isinstance(record.args, tuple) and len(record.args) == 5:
+            values = list(record.args)
+            if isinstance(values[2], str):
+                values[2] = self._mask(values[2])
+            record.args = tuple(values)
+        elif isinstance(record.msg, str):
+            record.msg = self._mask(record.getMessage())
+            record.args = ()
         return True
 
 

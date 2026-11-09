@@ -119,3 +119,24 @@ def test_session_count_bounds():
     base = {"resume": "x", "role": "QA"}
     assert c.post("/api/session", json={**base, "count": 2}).status_code == 422
     assert c.post("/api/session", json={**base, "count": 9}).status_code == 422
+
+
+def test_access_log_redaction_keeps_uvicorn_formatter_arguments():
+    import logging
+    from app.main import _AccessLogSidFilter
+    from uvicorn.logging import AccessFormatter
+    for path in ['/api/session/' + 'a'*24 + '/report', '/api/s/'+'B'*32, '/s/'+'c'*32]:
+        rec = logging.LogRecord('uvicorn.access', logging.INFO, '', 1,
+              '%s - "%s %s HTTP/%s" %d', ('127.0.0.1', 'GET', path, '1.1', 200), None)
+        _AccessLogSidFilter().filter(rec)
+        assert len(rec.args) == 5
+        formatted = AccessFormatter('%(client_addr)s - "%(request_line)s" %(status_code)s', use_colors=False).format(rec)
+        assert path not in formatted and '***' in formatted and '200' in formatted
+
+
+def test_access_log_redacts_preformatted_lines():
+    import logging
+    from app.main import _AccessLogSidFilter
+    rec = logging.LogRecord('uvicorn.access', logging.INFO, '', 1, 'GET /api/session/'+'a'*24+'/state', (), None)
+    _AccessLogSidFilter().filter(rec)
+    assert rec.getMessage() == 'GET /api/session/***/state'
