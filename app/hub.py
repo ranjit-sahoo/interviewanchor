@@ -782,14 +782,3 @@ def status():
 @router.get("/help")
 def help_page():
     return FileResponse(os.path.join(STATIC, "help.html"), media_type="text/html")
-
-
-@router.get("/.well-known/assetlinks.json")
-def assetlinks():
-    """Play Store (TWA) ownership file. Set ASSETLINKS_JSON on the host with the JSON Google gives at publish time."""
-    raw = os.environ.get("ASSETLINKS_JSON", "[]")
-    try:
-        data = json.loads(raw)
-    except Exception:
-        data = []
-    return JSONResponse(data)
